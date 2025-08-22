@@ -1,0 +1,30 @@
+#include "MyOGL.h"
+
+MYICON ICON Rick.ico
+
+
+IDBITMAP_OPENINGSCENE BITMAP texture_open_scene.bmp
+
+IDBITMAP_MOUNTAIN BITMAP tempMountain.bmp
+IDBITMAP_BACKGROUND BITMAP texture_cloud.bmp
+IDBITMAP_SUN BITMAP texture_sun.bmp
+IDBITMAP_TREE BITMAP texture_tree.bmp
+IDBITMAP_CLOUD BITMAP texture_cloud.bmp
+IDBITMAP_GRASS BITMAP texture_grass.bmp
+IDBITMAP_HOME BITMAP texture_home.bmp
+IDBITMAP_DOOR BITMAP texture_door.bmp
+IDBITMAP_WINDOW BITMAP texture_window.bmp
+IDBITMAP_BRANCH BITMAP texture_branch.bmp
+IDBITMAP_BIRDFOOD BITMAP texture_birdfood.bmp
+
+IDBITMAP_PHOTO1 BITMAP ENDphoto1.bmp
+IDBITMAP_PHOTO2 BITMAP ENDphoto2.bmp
+IDBITMAP_PHOTO3 BITMAP ENDphoto3.bmp
+IDBITMAP_PHOTO4 BITMAP ENDphoto4Final.bmp
+
+
+
+
+
+
+

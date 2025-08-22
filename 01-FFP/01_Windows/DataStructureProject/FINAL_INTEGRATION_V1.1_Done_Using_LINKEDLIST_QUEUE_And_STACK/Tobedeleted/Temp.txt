@@ -1,0 +1,345 @@
+/*fprintf(gpFile, "BEFORE DEQUEUE   giScene = %d gliEventTime = %lld delta = %lld\n", giScene, gliEventTime.QuadPart, delta.QuadPart);
+		gliEventTime = Dequeue();
+		if (gliEventTime.QuadPart == 0)
+		{
+			giScene = SCENE0;
+		}
+		else
+		{
+			giScene++;
+		}
+		fprintf(gpFile, "AFTER DEQUEUE   giScene = %d gliEventTime = %lld\n", giScene, gliEventTime.QuadPart);
+		DisplayQueue();
+	}
+
+	////////////////////////////////////////
+
+	switch (giScene)
+	{
+		case SCENE1:
+			if (openingCredits_flag)
+			{
+				transY = transY + 0.006f;
+				if (transY >= 3.0f)
+				{
+					transY = 3.0f;
+
+					openingCredits_flag = FALSE;
+					scene1_flag = TRUE;
+				}
+			}
+			break;
+
+
+		case SCENE2:
+			if (scene1_flag)
+			{
+				//FOR FADING BACKGROUND COLOR
+				fade1 = fade1 + 0.001f;
+				if (fade1 >= 0.85f)
+					fade1 = 0.85f;
+
+				fade2 = fade2 + 0.001f;
+				if (fade2 >= 0.65f)
+					fade2 = 0.65f;
+
+				transBackground = transBackground + 0.01f;
+
+				// FOR SUN ANIMATION 
+				if (sunFlag)
+				{
+					transSun = transSun + 0.03f;
+
+					if (transSun >= 6.0f)
+					{
+						sunFlag = FALSE;
+						scene2_flag = FALSE;
+						birdFlag = TRUE;
+						scene3_flag = TRUE;
+					}
+				}
+			}
+			break;
+
+		case SCENE3:
+			if (scene3_flag)
+			{
+				//FOR BIRD
+				if (birdFlag)
+				{
+					birdX = birdX - 0.010f;
+					if (birdX <= 3.0f)
+					{
+						birdX = 3.0f;
+						birdYFlag = TRUE;
+					}
+
+					if (birdYFlag)
+					{
+						birdY = birdY - 0.010f;
+						if (birdY <= -1.1f)
+						{
+							birdY = -1.1f;
+							birdYFlag = FALSE;
+							FoodFlag = TRUE;
+							birdFlag = FALSE;
+						}
+					}
+				}
+				if (FoodFlag)
+				{
+					translateBirdFood += 0.00002f;
+					if (translateBirdFood >= 0.64f)
+					{
+
+						translateBirdFood = 0.64f;
+						FoodFlag = FALSE;
+						//counter 
+						birdCounterFlag++;
+						if (birdcounter >= 200)
+						{
+							birdExitXFlag = TRUE;
+						}
+					}
+				}
+				if (birdExitXFlag)
+				{
+					birdY = birdY + 0.005f;
+					birdX = birdX - 0.005f;
+
+					if (birdY > 3.3f)
+					{
+						birdY = 3.3f;
+					}
+
+					if (birdX < -15.0f)
+					{
+						birdX = -15.0f;
+					}
+
+					if (birdX <= -4.8f)
+					{
+						singleBirdFlag = TRUE;
+					}
+
+					if (singleBirdFlag)
+					{
+						newbirdX -= 0.013f;
+						newbirdY += 0.013f;
+
+						if (newbirdY > 4.9f)
+						{
+							newbirdY = 4.9f;
+						}
+
+					}
+					if (newbirdY == 4.9f)
+					{
+						counter++;
+						if (counter >= 250)
+						{
+							scene1_flag = FALSE;
+							scene2_flag = FALSE;
+							flag1 = TRUE;
+						}
+					}
+				}
+			}
+			break;
+
+		case SCENE4:
+			if (flag1)
+			{
+				transPhoto1 = transPhoto1 + 0.004f;
+				if (transPhoto1 >= 1.3f)
+					flag1 = FALSE;
+				flag2 = TRUE;
+			}
+
+			if (flag2)
+			{
+				transPhoto2 = transPhoto2 + 0.004f;
+				if (transPhoto2 >= 1.3f)
+					flag2 = FALSE;
+				flag3 = TRUE;
+			}
+
+
+			if (flag3)
+			{
+				transPhoto3 = transPhoto3 + 0.004f;
+				if (transPhoto3 >= 1.3f)
+					flag3 = FALSE;
+				flag4 = TRUE;
+			}
+
+
+			if (flag4)
+			{
+				transPhoto4 = transPhoto4 + 0.004f;
+				if (transPhoto3 >= 1.3f)
+					flag3 = FALSE;
+				flag4 = TRUE;
+			}
+			break;
+	}
+		Opening Credits Scene 1
+		if (openingCredits_flag)
+		{
+			transY = transY + 0.006f;
+			if (transY >= 3.0f)
+			{
+				transY = 3.0f;
+
+				openingCredits_flag = FALSE;
+				scene1_flag = TRUE;
+			}
+		}*/
+		
+		//Scene 1
+		/*if (scene1_flag)
+		{
+			//FOR FADING BACKGROUND COLOR
+			fade1 = fade1 + 0.001f;
+			if (fade1 >= 0.85f)
+				fade1 = 0.85f;
+
+			fade2 = fade2 + 0.001f;
+			if (fade2 >= 0.65f)
+				fade2 = 0.65f;
+
+			transBackground = transBackground + 0.01f;
+
+			// FOR SUN ANIMATION 
+			if (sunFlag)
+			{
+				transSun = transSun + 0.03f;		
+
+				if (transSun >= 6.0f)
+				{
+					sunFlag = FALSE;
+					scene2_flag = TRUE;
+					birdFlag = TRUE;
+				}
+			}
+		}*/
+
+		//Scene2
+		/*if (scene2_flag)
+		{
+			//FOR BIRD
+			if (birdFlag)
+			{
+				birdX = birdX - 0.015f;
+				if (birdX <= 3.0f)
+				{
+					birdX = 3.0f;
+					birdYFlag = TRUE;
+				}
+
+				if (birdYFlag)
+				{
+					birdY = birdY - 0.015f;
+					if (birdY <= -1.1f)
+					{
+						birdY = -1.1f;
+						birdYFlag = FALSE;
+						FoodFlag = TRUE;
+						birdFlag = FALSE;
+					}
+				}
+			}
+			if (FoodFlag)
+			{
+				translateBirdFood += 0.008f;
+				if (translateBirdFood >= 0.64f)
+				{
+					
+					translateBirdFood = 0.64f;
+					FoodFlag = FALSE;
+					//counter 
+						birdCounterFlag++;
+						if (birdcounter >= 200)
+						{
+							birdExitXFlag = TRUE;
+						}
+				}
+			}
+			if (birdExitXFlag)
+			{
+				birdY = birdY + 0.005f;
+				birdX = birdX - 0.015f;
+
+				if (birdY > 3.3f)
+				{
+					birdY = 3.3f;
+				}
+
+				if (birdX < -15.0f)
+				{
+					birdX = -15.0f;
+				}
+
+				if (birdX <= -4.8f)
+				{
+					singleBirdFlag = TRUE;
+				}
+
+				if (singleBirdFlag)
+				{
+					newbirdX -= 0.013f;
+					newbirdY += 0.013f;
+
+					if (newbirdY > 4.9f)
+					{
+						newbirdY = 4.9f;
+					}
+
+				}
+					if (newbirdY == 4.9f)
+					{
+							counter++;
+							if (counter >= 250)
+							{
+								scene1_flag = FALSE;
+								scene2_flag = FALSE;
+								flag1 = TRUE;
+							}
+					}
+			}
+		}*/
+
+					// FOR END CREDITS
+					/*if (flag1)
+					{
+						transPhoto1 = transPhoto1 + 0.004f;
+						if (transPhoto1 >= 1.3f)
+							flag1 = FALSE;
+							flag2 = TRUE;
+					}
+
+					if (flag2)
+					{
+						transPhoto2 = transPhoto2 + 0.004f;
+						if (transPhoto2 >= 1.3f)
+							flag2 = FALSE;
+							flag3 = TRUE;
+					}
+
+
+					if (flag3)
+					{
+						transPhoto3 = transPhoto3 + 0.004f;
+						if (transPhoto3 >= 1.3f)
+							flag3 = FALSE;
+							flag4 = TRUE;
+					}
+
+
+					if (flag4)
+					{
+						transPhoto4 = transPhoto4 + 0.004f;
+						if (transPhoto3 >= 1.3f)
+							flag3 = FALSE;
+							flag4 = TRUE;
+					}*/

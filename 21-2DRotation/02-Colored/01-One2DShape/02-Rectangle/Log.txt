@@ -1,3 +1,0 @@
-Log File Successfully Created !!
-Making OpenGL context as current context Successful
-Log File Successfully Closed !!

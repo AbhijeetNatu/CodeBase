@@ -1,0 +1,4 @@
+#include "MyOGL.h"
+
+MYICON ICON Rick.ico
+MYSOUND SOUND KadamKadamBadhayeJa.wav

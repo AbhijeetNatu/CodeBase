@@ -1,0 +1,3 @@
+#include "MyOGL.h"
+
+MYICON ICON Rick.ico
