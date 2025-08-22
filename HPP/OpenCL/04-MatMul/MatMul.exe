@@ -1,0 +1,2957 @@
+import _plotly_utils.basevalidators
+
+
+class AnnotationsValidator(_plotly_utils.basevalidators.CompoundArrayValidator):
+    def __init__(self, plotly_name="annotations", parent_name="layout.scene", **kwargs):
+        super(AnnotationsValidator, self).__init__(
+            plotly_name=plotly_name,
+            parent_name=parent_name,
+            data_class_str=kwargs.pop("data_class_str", "Annotation"),
+            data_docs=kwargs.pop(
+                "data_docs",
+                """
+            align
+                Sets the horizontal alignment of the `text`
+                within the box. Has an effect only if `text`
+                spans two or more lines (i.e. `text` contains
+                one or more <br> HTML tags) or if an explicit
+                width is set to override the text width.
+            arrowcolor
+                Sets the color of the annotation arrow.
+            arrowhead
+                Sets the end annotation arrow head style.
+            arrowside
+                Sets the annotation arrow head position.
+            arrowsize
+                Sets the size of the end annotation arrow head,
+                relative to `arrowwidth`. A value of 1
+                (default) gives a head about 3x as wide as the
+                line.
+            arrowwidth
+                Sets the width (in px) of annotation arrow
+                line.
+            ax
+                Sets the x component of the arrow tail about
+                the arrow head (in pixels).
+            ay
+                Sets the y component of the arrow tail about
+                the arrow head (in pixels).
+            bgcolor
+                Sets the background color of the annotation.
+            bordercolor
+                Sets the color of the border enclosing the
+                annotation `text`.
+            borderpad
+                Sets the padding (in px) between the `text` and
+                the enclosing border.
+            borderwidth
+                Sets the width (in px) of the border enclosing
+                the annotation `text`.
+            captureevents
+                Determines whether the annotation text box
+                captures mouse move and click events, or allows
+                those events to pass through to data points in
+                the plot that may be behind the annotation. By
+                default `captureevents` is False unless
+                `hovertext` is provided. If you use the event
+                `plotly_clickannotation` without `hovertext`
+                you must explicitly enable `captureevents`.
+            font
+                Sets the annotation text font.
+            height
+                Sets an explicit height for the text box. null
+                (default) lets the text set the box height.
+                Taller text will be clipped.
+            hoverlabel
+                :class:`plotly.graph_objects.layout.scene.annot
+                ation.Hoverlabel` instance or dict with
+                compatible properties
+            hovertext
+                Sets text to appear when hovering over this
+                annotation. If omitted or blank, no hover label
+                will appear.
+            name
+                When used in a template, named items are
+                created in the output figure in addition to any
+                items the figure already has in this array. You
+                can modify these items in the output figure by
+                making your own item with `templateitemname`
+                matching this `name` alongside your
+                modifications (including `visible: false` or
+                `enabled: false` to hide it). Has no effect
+                outside of a template.
+            opacity
+                Sets the opacity of the annotation (text +
+                arrow).
+            showarrow
+                Determines whether or not the annotation is
+                drawn with an arrow. If True, `text` is placed
+                near the arrow's tail. If False, `text` lines
+                up with the `x` and `y` provided.
+            standoff
+                Sets a distance, in pixels, to move the end
+                arrowhead away from the position it is pointing
+                at, for example to point at the edge of a
+                marker independent of zoom. Note that this
+                shortens the arrow from the `ax` / `ay` vector,
+                in contrast to `xshift` / `yshift` which moves
+                everything by this amount.
+            startarrowhead
+                Sets the start annotation arrow head style.
+            startarrowsize
+                Sets the size of the start annotation arrow
+                head, relative to `arrowwidth`. A value of 1
+                (default) gives a head about 3x as wide as the
+                line.
+            startstandoff
+                Sets a distance, in pixels, to move the start
+                arrowhead away from the position it is pointing
+                at, for example to point at the edge of a
+                marker independent of zoom. Note that this
+                shortens the arrow from the `ax` / `ay` vector,
+                in contrast to `xshift` / `yshift` which moves
+                everything by this amount.
+            templateitemname
+                Used to refer to a named item in this array in
+                the template. Named items from the template
+                will be created even without a matching item in
+                the input figure, but you can modify one by
+                making an item with `templateitemname` matching
+                its `name`, alongside your modifications
+                (including `visible: false` or `enabled: false`
+                to hide it). If there is no template or no
+                matching item, this item will be hidden unless
+                you explicitly show it with `visible: true`.
+            text
+                Sets the text associated with this annotation.
+                Plotly uses a subset of HTML tags to do things
+                like newline (<br>), bold (<b></b>), italics
+                (<i></i>), hyperlinks (<a href='...'></a>).
+                Tags <em>, <sup>, <sub> <span> are also
+                supported.
+            textangle
+                Sets the angle at which the `text` is drawn
+                with respect to the horizontal.
+            valign
+                Sets the vertical alignment of the `text`
+                within the box. Has an effect only if an
+                explicit height is set to override the text
+                height.
+            visible
+                Determines whether or not this annotation is
+                visible.
+            width
+                Sets an explicit width for the text box. null
+                (default) lets the text set the box width.
+                Wider text will be clipped. There is no
+                automatic wrapping; use <br> to start a new
+                line.
+            x
+                Sets the annotation's x position.
+            xanchor
+                Sets the text box's horizontal position anchor
+                This anchor binds the `x` position to the
+                "left", "center" or "right" of the annotation.
+                For example, if `x` is set to 1, `xref` to
+                "paper" and `xanchor` to "right" then the
+                right-most portion of the annotation lines up
+                with the right-most edge of the plotting area.
+                If "auto", the anchor is equivalent to "center"
+                for data-referenced annotations or if there is
+                an arrow, whereas for paper-referenced with no
+                arrow, the anchor picked corresponds to the
+                closest side.
+            xshift
+                Shifts the position of the whole annotation and
+                arrow to the right (positive) or left
+                (negative) by this many pixels.
+            y
+                Sets the annotation's y position.
+            yanchor
+                Sets the text box's vertical position anchor
+                This anchor binds the `y` position to the
+                "top", "middle" or "bottom" of the annotation.
+                For example, if `y` is set to 1, `yref` to
+                "paper" and `yanchor` to "top" then the top-
+                most portion of the annotation lines up with
+                the top-most edge of the plotting area. If
+                "auto", the anchor is equivalent to "middle"
+                for data-referenced annotations or if there is
+                an arrow, whereas for paper-referenced with no
+                arrow, the anchor picked corresponds to the
+                closest side.
+            yshift
+                Shifts the position of the whole annotation and
+                arrow up (positive) or down (negative) by this
+                many pixels.
+            z
+                Sets the annotation's z position.
+""",
+            ),
+            **kwargs,
+        )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          import sys
+from typing import TYPE_CHECKING
+
+if sys.version_info < (3, 7) or TYPE_CHECKING:
+    from ._visible import VisibleValidator
+    from ._uirevision import UirevisionValidator
+    from ._type import TypeValidator
+    from ._title import TitleValidator
+    from ._tickwidth import TickwidthValidator
+    from ._tickvalssrc import TickvalssrcValidator
+    from ._tickvals import TickvalsValidator
+    from ._ticktextsrc import TicktextsrcValidator
+    from ._ticktext import TicktextValidator
+    from ._ticksuffix import TicksuffixValidator
+    from ._ticks import TicksValidator
+    from ._tickprefix import TickprefixValidator
+    from ._tickmode import TickmodeValidator
+    from ._ticklen import TicklenValidator
+    from ._ticklabelstep import TicklabelstepValidator
+    from ._tickformatstopdefaults import TickformatstopdefaultsValidator
+    from ._tickformatstops import TickformatstopsValidator
+    from ._tickformat import TickformatValidator
+    from ._tickfont import TickfontValidator
+    from ._tickcolor import TickcolorValidator
+    from ._tickangle import TickangleValidator
+    from ._tick0 import Tick0Validator
+    from ._side import SideValidator
+    from ._showticksuffix import ShowticksuffixValidator
+    from ._showtickprefix import ShowtickprefixValidator
+    from ._showticklabels import ShowticklabelsValidator
+    from ._showline import ShowlineValidator
+    from ._showgrid import ShowgridValidator
+    from ._showexponent import ShowexponentValidator
+    from ._separatethousands import SeparatethousandsValidator
+    from ._rangemode import RangemodeValidator
+    from ._range import RangeValidator
+    from ._nticks import NticksValidator
+    from ._minexponent import MinexponentValidator
+    from ._minallowed import MinallowedValidator
+    from ._maxallowed import MaxallowedValidator
+    from ._linewidth import LinewidthValidator
+    from ._linecolor import LinecolorValidator
+    from ._layer import LayerValidator
+    from ._labelalias import LabelaliasValidator
+    from ._hoverformat import HoverformatValidator
+    from ._gridwidth import GridwidthValidator
+    from ._griddash import GriddashValidator
+    from ._gridcolor import GridcolorValidator
+    from ._exponentformat import ExponentformatValidator
+    from ._dtick import DtickValidator
+    from ._color import ColorValidator
+    from ._categoryorder import CategoryorderValidator
+    from ._categoryarraysrc import CategoryarraysrcValidator
+    from ._categoryarray import CategoryarrayValidator
+    from ._calendar import CalendarValidator
+    from ._autotypenumbers import AutotypenumbersValidator
+    from ._autotickangles import AutotickanglesValidator
+    from ._autorangeoptions import AutorangeoptionsValidator
+    from ._autorange import AutorangeValidator
+    from ._angle import AngleValidator
+else:
+    from _plotly_utils.importers import relative_import
+
+    __all__, __getattr__, __dir__ = relative_import(
+        __name__,
+        [],
+        [
+            "._visible.VisibleValidator",
+            "._uirevision.UirevisionValidator",
+            "._type.TypeValidator",
+            "._title.TitleValidator",
+            "._tickwidth.TickwidthValidator",
+            "._tickvalssrc.TickvalssrcValidator",
+            "._tickvals.TickvalsValidator",
+            "._ticktextsrc.TicktextsrcValidator",
+            "._ticktext.TicktextValidator",
+            "._ticksuffix.TicksuffixValidator",
+            "._ticks.TicksValidator",
+            "._tickprefix.TickprefixValidator",
+            "._tickmode.TickmodeValidator",
+            "._ticklen.TicklenValidator",
+            "._ticklabelstep.TicklabelstepValidator",
+            "._tickformatstopdefaults.TickformatstopdefaultsValidator",
+            "._tickformatstops.TickformatstopsValidator",
+            "._tickformat.TickformatValidator",
+            "._tickfont.TickfontValidator",
+            "._tickcolor.TickcolorValidator",
+            "._tickangle.TickangleValidator",
+            "._tick0.Tick0Validator",
+            "._side.SideValidator",
+            "._showticksuffix.ShowticksuffixValidator",
+            "._showtickprefix.ShowtickprefixValidator",
+            "._showticklabels.ShowticklabelsValidator",
+            "._showline.ShowlineValidator",
+            "._showgrid.ShowgridValidator",
+            "._showexponent.ShowexponentValidator",
+            "._separatethousands.SeparatethousandsValidator",
+            "._rangemode.RangemodeValidator",
+            "._range.RangeValidator",
+            "._nticks.NticksValidator",
+            "._minexponent.MinexponentValidator",
+            "._minallowed.MinallowedValidator",
+            "._maxallowed.MaxallowedValidator",
+            "._linewidth.LinewidthValidator",
+            "._linecolor.LinecolorValidator",
+            "._layer.LayerValidator",
+            "._labelalias.LabelaliasValidator",
+            "._hoverformat.HoverformatValidator",
+            "._gridwidth.GridwidthValidator",
+            "._griddash.GriddashValidator",
+            "._gridcolor.GridcolorValidator",
+            "._exponentformat.ExponentformatValidator",
+            "._dtick.DtickValidator",
+            "._color.ColorValidator",
+            "._categoryorder.CategoryorderValidator",
+            "._categoryarraysrc.CategoryarraysrcValidator",
+            "._categoryarray.CategoryarrayValidator",
+            "._calendar.CalendarValidator",
+            "._autotypenumbers.AutotypenumbersValidator",
+            "._autotickangles.AutotickanglesValidator",
+            "._autorangeoptions.AutorangeoptionsValidator",
+            "._autorange.AutorangeValidator",
+            "._angle.AngleValidator",
+        ],
+    )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           import sys
+from typing import TYPE_CHECKING
+
+if sys.version_info < (3, 7) or TYPE_CHECKING:
+    from ._visible import VisibleValidator
+    from ._uirevision import UirevisionValidator
+    from ._type import TypeValidator
+    from ._tickwidth import TickwidthValidator
+    from ._tickvalssrc import TickvalssrcValidator
+    from ._tickvals import TickvalsValidator
+    from ._ticktextsrc import TicktextsrcValidator
+    from ._ticktext import TicktextValidator
+    from ._ticksuffix import TicksuffixValidator
+    from ._ticks import TicksValidator
+    from ._tickprefix import TickprefixValidator
+    from ._tickmode import TickmodeValidator
+    from ._ticklen import TicklenValidator
+    from ._ticklabelstep import TicklabelstepValidator
+    from ._tickformatstopdefaults import TickformatstopdefaultsValidator
+    from ._tickformatstops import TickformatstopsValidator
+    from ._tickformat import TickformatValidator
+    from ._tickfont import TickfontValidator
+    from ._tickcolor import TickcolorValidator
+    from ._tickangle import TickangleValidator
+    from ._tick0 import Tick0Validator
+    from ._thetaunit import ThetaunitValidator
+    from ._showticksuffix import ShowticksuffixValidator
+    from ._showtickprefix import ShowtickprefixValidator
+    from ._showticklabels import ShowticklabelsValidator
+    from ._showline import ShowlineValidator
+    from ._showgrid import ShowgridValidator
+    from ._showexponent import ShowexponentValidator
+    from ._separatethousands import SeparatethousandsValidator
+    from ._rotation import RotationValidator
+    from ._period import PeriodValidator
+    from ._nticks import NticksValidator
+    from ._minexponent import MinexponentValidator
+    from ._linewidth import LinewidthValidator
+    from ._linecolor import LinecolorValidator
+    from ._layer import LayerValidator
+    from ._labelalias import LabelaliasValidator
+    from ._hoverformat import HoverformatValidator
+    from ._gridwidth import GridwidthValidator
+    from ._griddash import GriddashValidator
+    from ._gridcolor import GridcolorValidator
+    from ._exponentformat import ExponentformatValidator
+    from ._dtick import DtickValidator
+    from ._direction import DirectionValidator
+    from ._color import ColorValidator
+    from ._categoryorder import CategoryorderValidator
+    from ._categoryarraysrc import CategoryarraysrcValidator
+    from ._categoryarray import CategoryarrayValidator
+    from ._autotypenumbers import AutotypenumbersValidator
+else:
+    from _plotly_utils.importers import relative_import
+
+    __all__, __getattr__, __dir__ = relative_import(
+        __name__,
+        [],
+        [
+            "._visible.VisibleValidator",
+            "._uirevision.UirevisionValidator",
+            "._type.TypeValidator",
+            "._tickwidth.TickwidthValidator",
+            "._tickvalssrc.TickvalssrcValidator",
+            "._tickvals.TickvalsValidator",
+            "._ticktextsrc.TicktextsrcValidator",
+            "._ticktext.TicktextValidator",
+            "._ticksuffix.TicksuffixValidator",
+            "._ticks.TicksValidator",
+            "._tickprefix.TickprefixValidator",
+            "._tickmode.TickmodeValidator",
+            "._ticklen.TicklenValidator",
+            "._ticklabelstep.TicklabelstepValidator",
+            "._tickformatstopdefaults.TickformatstopdefaultsValidator",
+            "._tickformatstops.TickformatstopsValidator",
+            "._tickformat.TickformatValidator",
+            "._tickfont.TickfontValidator",
+            "._tickcolor.TickcolorValidator",
+            "._tickangle.TickangleValidator",
+            "._tick0.Tick0Validator",
+            "._thetaunit.ThetaunitValidator",
+            "._showticksuffix.ShowticksuffixValidator",
+            "._showtickprefix.ShowtickprefixValidator",
+            "._showticklabels.ShowticklabelsValidator",
+            "._showline.ShowlineValidator",
+            "._showgrid.ShowgridValidator",
+            "._showexponent.ShowexponentValidator",
+            "._separatethousands.SeparatethousandsValidator",
+            "._rotation.RotationValidator",
+            "._period.PeriodValidator",
+            "._nticks.NticksValidator",
+            "._minexponent.MinexponentValidator",
+            "._linewidth.LinewidthValidator",
+            "._linecolor.LinecolorValidator",
+            "._layer.LayerValidator",
+            "._labelalias.LabelaliasValidator",
+            "._hoverformat.HoverformatValidator",
+            "._gridwidth.GridwidthValidator",
+            "._griddash.GriddashValidator",
+            "._gridcolor.GridcolorValidator",
+            "._exponentformat.ExponentformatValidator",
+            "._dtick.DtickValidator",
+            "._direction.DirectionValidator",
+            "._color.ColorValidator",
+            "._categoryorder.CategoryorderValidator",
+            "._categoryarraysrc.CategoryarraysrcValidator",
+            "._categoryarray.CategoryarrayValidator",
+            "._autotypenumbers.AutotypenumbersValidator",
+        ],
+    )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      import _plotly_utils.basevalidators
+
+
+class LabelValidator(_plotly_utils.basevalidators.CompoundValidator):
+    def __init__(self, plotly_name="label", parent_name="layout.newshape", **kwargs):
+        super(LabelValidator, self).__init__(
+            plotly_name=plotly_name,
+            parent_name=parent_name,
+            data_class_str=kwargs.pop("data_class_str", "Label"),
+            data_docs=kwargs.pop(
+                "data_docs",
+                """
+            font
+                Sets the new shape label text font.
+            padding
+                Sets padding (in px) between edge of label and
+                edge of new shape.
+            text
+                Sets the text to display with the new shape. It
+                is also used for legend item if `name` is not
+                provided.
+            textangle
+                Sets the angle at which the label text is drawn
+                with respect to the horizontal. For lines,
+                angle "auto" is the same angle as the line. For
+                all other shapes, angle "auto" is horizontal.
+            textposition
+                Sets the position of the label text relative to
+                the new shape. Supported values for rectangles,
+                circles and paths are *top left*, *top center*,
+                *top right*, *middle left*, *middle center*,
+                *middle right*, *bottom left*, *bottom center*,
+                and *bottom right*. Supported values for lines
+                are "start", "middle", and "end". Default:
+                *middle center* for rectangles, circles, and
+                paths; "middle" for lines.
+            texttemplate
+                Template string used for rendering the new
+                shape's label. Note that this will override
+                `text`. Variables are inserted using
+                %{variable}, for example "x0: %{x0}". Numbers
+                are formatted using d3-format's syntax
+                %{variable:d3-format}, for example "Price:
+                %{x0:$.2f}". See https://github.com/d3/d3-
+                format/tree/v1.4.5#d3-format for details on the
+                formatting syntax. Dates are formatted using
+                d3-time-format's syntax %{variable|d3-time-
+                format}, for example "Day: %{x0|%m %b %Y}". See
+                https://github.com/d3/d3-time-
+                format/tree/v2.2.3#locale_format for details on
+                the date formatting syntax. A single
+                multiplication or division operation may be
+                applied to numeric variables, and combined with
+                d3 number formatting, for example "Length in
+                cm: %{x0*2.54}", "%{slope*60:.1f} meters per
+                second." For log axes, variable values are
+                given in log units. For date axes, x/y
+                coordinate variables and center variables use
+                datetimes, while all other variable values use
+                values in ms. Finally, the template string has
+                access to variables `x0`, `x1`, `y0`, `y1`,
+                `slope`, `dx`, `dy`, `width`, `height`,
+                `length`, `xcenter` and `ycenter`.
+            xanchor
+                Sets the label's horizontal position anchor
+                This anchor binds the specified `textposition`
+                to the "left", "center" or "right" of the label
+                text. For example, if `textposition` is set to
+                *top right* and `xanchor` to "right" then the
+                right-most portion of the label text lines up
+                with the right-most edge of the new shape.
+            yanchor
+                Sets the label's vertical position anchor This
+                anchor binds the specified `textposition` to
+                the "top", "middle" or "bottom" of the label
+                text. For example, if `textposition` is set to
+                *top right* and `yanchor` to "top" then the
+                top-most portion of the label text lines up
+                with the top-most edge of the new shape.
+""",
+            ),
+            **kwargs,
+        )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        import _plotly_utils.basevalidators
+
+
+class LayersValidator(_plotly_utils.basevalidators.CompoundArrayValidator):
+    def __init__(self, plotly_name="layers", parent_name="layout.mapbox", **kwargs):
+        super(LayersValidator, self).__init__(
+            plotly_name=plotly_name,
+            parent_name=parent_name,
+            data_class_str=kwargs.pop("data_class_str", "Layer"),
+            data_docs=kwargs.pop(
+                "data_docs",
+                """
+            below
+                Determines if the layer will be inserted before
+                the layer with the specified ID. If omitted or
+                set to '', the layer will be inserted above
+                every existing layer.
+            circle
+                :class:`plotly.graph_objects.layout.mapbox.laye
+                r.Circle` instance or dict with compatible
+                properties
+            color
+                Sets the primary layer color. If `type` is
+                "circle", color corresponds to the circle color
+                (mapbox.layer.paint.circle-color) If `type` is
+                "line", color corresponds to the line color
+                (mapbox.layer.paint.line-color) If `type` is
+                "fill", color corresponds to the fill color
+                (mapbox.layer.paint.fill-color) If `type` is
+                "symbol", color corresponds to the icon color
+                (mapbox.layer.paint.icon-color)
+            coordinates
+                Sets the coordinates array contains [longitude,
+                latitude] pairs for the image corners listed in
+                clockwise order: top left, top right, bottom
+                right, bottom left. Only has an effect for
+                "image" `sourcetype`.
+            fill
+                :class:`plotly.graph_objects.layout.mapbox.laye
+                r.Fill` instance or dict with compatible
+                properties
+            line
+                :class:`plotly.graph_objects.layout.mapbox.laye
+                r.Line` instance or dict with compatible
+                properties
+            maxzoom
+                Sets the maximum zoom level
+                (mapbox.layer.maxzoom). At zoom levels equal to
+                or greater than the maxzoom, the layer will be
+                hidden.
+            minzoom
+                Sets the minimum zoom level
+                (mapbox.layer.minzoom). At zoom levels less
+                than the minzoom, the layer will be hidden.
+            name
+                When used in a template, named items are
+                created in the output figure in addition to any
+                items the figure already has in this array. You
+                can modify these items in the output figure by
+                making your own item with `templateitemname`
+                matching this `name` alongside your
+                modifications (including `visible: false` or
+                `enabled: false` to hide it). Has no effect
+                outside of a template.
+            opacity
+                Sets the opacity of the layer. If `type` is
+                "circle", opacity corresponds to the circle
+                opacity (mapbox.layer.paint.circle-opacity) If
+                `type` is "line", opacity corresponds to the
+                line opacity (mapbox.layer.paint.line-opacity)
+                If `type` is "fill", opacity corresponds to the
+                fill opacity (mapbox.layer.paint.fill-opacity)
+                If `type` is "symbol", opacity corresponds to
+                the icon/text opacity (mapbox.layer.paint.text-
+                opacity)
+            source
+                Sets the source data for this layer
+                (mapbox.layer.source). When `sourcetype` is set
+                to "geojson", `source` can be a URL to a
+                GeoJSON or a GeoJSON object. When `sourcetype`
+                is set to "vector" or "raster", `source` can be
+                a URL or an array of tile URLs. When
+                `sourcetype` is set to "image", `source` can be
+                a URL to an image.
+            sourceattribution
+                Sets the attribution for this source.
+            sourcelayer
+                Specifies the layer to use from a vector tile
+                source (mapbox.layer.source-layer). Required
+                for "vector" source type that supports multiple
+                layers.
+            sourcetype
+                Sets the source type for this layer, that is
+                the type of the layer data.
+            symbol
+                :class:`plotly.graph_objects.layout.mapbox.laye
+                r.Symbol` instance or dict with compatible
+                properties
+            templateitemname
+                Used to refer to a named item in this array in
+                the template. Named items from the template
+                will be created even without a matching item in
+                the input figure, but you can modify one by
+                making an item with `templateitemname` matching
+                its `name`, alongside your modifications
+                (including `visible: false` or `enabled: false`
+                to hide it). If there is no template or no
+                matching item, this item will be hidden unless
+                you explicitly show it with `visible: true`.
+            type
+                Sets the layer type, that is the how the layer
+                data set in `source` will be rendered With
+                `sourcetype` set to "geojson", the following
+                values are allowed: "circle", "line", "fill"
+                and "symbol". but note that "line" and "fill"
+                are not compatible with Point GeoJSON
+                geometries. With `sourcetype` set to "vector",
+                the following values are allowed:  "circle",
+                "line", "fill" and "symbol". With `sourcetype`
+                set to "raster" or `*image*`, only the "raster"
+                value is allowed.
+            visible
+                Determines whether this layer is displayed
+""",
+            ),
+            **kwargs,
+        )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+/**
+ * Module dependencies.
+ */
+
+var tty = require('tty');
+var util = require('util');
+
+/**
+ * This is the Node.js implementation of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+
+exports = module.exports = require('./debug');
+exports.log = log;
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+
+/**
+ * Colors.
+ */
+
+exports.colors = [6, 2, 3, 4, 5, 1];
+
+/**
+ * The file descriptor to write the `debug()` calls to.
+ * Set the `DEBUG_FD` env variable to override with another value. i.e.:
+ *
+ *   $ DEBUG_FD=3 node script.js 3>debug.log
+ */
+
+var fd = parseInt(process.env.DEBUG_FD, 10) || 2;
+var stream = 1 === fd ? process.stdout :
+             2 === fd ? process.stderr :
+             createWritableStdioStream(fd);
+
+/**
+ * Is stdout a TTY? Colored output is enabled when `true`.
+ */
+
+function useColors() {
+  var debugColors = (process.env.DEBUG_COLORS || '').trim().toLowerCase();
+  if (0 === debugColors.length) {
+    return tty.isatty(fd);
+  } else {
+    return '0' !== debugColors
+        && 'no' !== debugColors
+        && 'false' !== debugColors
+        && 'disabled' !== debugColors;
+  }
+}
+
+/**
+ * Map %o to `util.inspect()`, since Node doesn't do that out of the box.
+ */
+
+var inspect = (4 === util.inspect.length ?
+  // node <= 0.8.x
+  function (v, colors) {
+    return util.inspect(v, void 0, void 0, colors);
+  } :
+  // node > 0.8.x
+  function (v, colors) {
+    return util.inspect(v, { colors: colors });
+  }
+);
+
+exports.formatters.o = exports.formatters.O = function(v) {
+  return inspect(v, this.useColors)
+    .replace(/\s*\n\s*/g, ' ');
+};
+
+/**
+ * Adds ANSI color escape codes if enabled.
+ *
+ * @api public
+ */
+
+function formatArgs() {
+  var len = arguments.length;
+  var args = new Array(len);
+  var useColors = this.useColors;
+  var name = this.namespace;
+  for (var i = 0; i < len; i++) {
+    args[i] = arguments[i];
+  }
+
+  if (useColors) {
+    var c = this.color;
+
+    args[0] = '  \u001b[3' + c + ';1m' + name + ' '
+      + '\u001b[0m'
+      + args[0];
+    args.push('\u001b[3' + c + 'm+' + exports.humanize(this.diff) + '\u001b[0m');
+  } else {
+    args[0] = new Date().toUTCString()
+      + ' ' + name + ' ' + args[0];
+  }
+  return args;
+}
+
+/**
+ * Invokes `console.error()` with the specified arguments.
+ */
+
+function log() {
+  return stream.write(util.format.apply(this, arguments) + '\n');
+}
+
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+
+function save(namespaces) {
+  if (null == namespaces) {
+    // If you set a process.env field to null or undefined, it gets cast to the
+    // string 'null' or 'undefined'. Just delete instead.
+    delete process.env.DEBUG;
+  } else {
+    process.env.DEBUG = namespaces;
+  }
+}
+
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+
+function load() {
+  return process.env.DEBUG;
+}
+
+/**
+ * Copied from `node/src/node.js`.
+ *
+ * XXX: It's lame that node doesn't expose this API out-of-the-box. It also
+ * relies on the undocumented `tty_wrap.guessHandleType()` which is also lame.
+ */
+
+function createWritableStdioStream (fd) {
+  var stream;
+  var tty_wrap = process.binding('tty_wrap');
+
+  // Note stream._type is used for test-module-load-list.js
+
+  switch (tty_wrap.guessHandleType(fd)) {
+    case 'TTY':
+      stream = new tty.WriteStream(fd);
+      stream._type = 'tty';
+
+      // Hack to have stream not keep the event loop alive.
+      // See https://github.com/joyent/node/issues/1726
+      if (stream._handle && stream._handle.unref) {
+        stream._handle.unref();
+      }
+      break;
+
+    case 'FILE':
+      var fs = require('fs');
+      stream = new fs.SyncWriteStream(fd, { autoClose: false });
+      stream._type = 'fs';
+      break;
+
+    case 'PIPE':
+    case 'TCP':
+      var net = require('net');
+      stream = new net.Socket({
+        fd: fd,
+        readable: false,
+        writable: true
+      });
+
+      // FIXME Should probably have an option in net.Socket to create a
+      // stream from an existing fd which is writable only. But for now
+      // we'll just add this hack and set the `readable` member to false.
+      // Test: ./node test/fixtures/echo.js < /etc/passwd
+      stream.readable = false;
+      stream.read = null;
+      stream._type = 'pipe';
+
+      // FIXME Hack to have stream not keep the event loop alive.
+      // See https://github.com/joyent/node/issues/1726
+      if (stream._handle && stream._handle.unref) {
+        stream._handle.unref();
+      }
+      break;
+
+    default:
+      // Probably an error on in uv_guess_handle()
+      throw new Error('Implement me. Unknown stream file type!');
+  }
+
+  // For supporting legacy API we put the FD here.
+  stream.fd = fd;
+
+  stream._isStdio = true;
+
+  return stream;
+}
+
+/**
+ * Enable namespaces listed in `process.env.DEBUG` initially.
+ */
+
+exports.enable(load());
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+
+exports = module.exports = debug.debug = debug;
+exports.coerce = coerce;
+exports.disable = disable;
+exports.enable = enable;
+exports.enabled = enabled;
+exports.humanize = require('ms');
+
+/**
+ * The currently active debug mode names, and names to skip.
+ */
+
+exports.names = [];
+exports.skips = [];
+
+/**
+ * Map of special "%n" handling functions, for the debug "format" argument.
+ *
+ * Valid key names are a single, lowercased letter, i.e. "n".
+ */
+
+exports.formatters = {};
+
+/**
+ * Previously assigned color.
+ */
+
+var prevColor = 0;
+
+/**
+ * Previous log timestamp.
+ */
+
+var prevTime;
+
+/**
+ * Select a color.
+ *
+ * @return {Number}
+ * @api private
+ */
+
+function selectColor() {
+  return exports.colors[prevColor++ % exports.colors.length];
+}
+
+/**
+ * Create a debugger with the given `namespace`.
+ *
+ * @param {String} namespace
+ * @return {Function}
+ * @api public
+ */
+
+function debug(namespace) {
+
+  // define the `disabled` version
+  function disabled() {
+  }
+  disabled.enabled = false;
+
+  // define the `enabled` version
+  function enabled() {
+
+    var self = enabled;
+
+    // set `diff` timestamp
+    var curr = +new Date();
+    var ms = curr - (prevTime || curr);
+    self.diff = ms;
+    self.prev = prevTime;
+    self.curr = curr;
+    prevTime = curr;
+
+    // add the `color` if not set
+    if (null == self.useColors) self.useColors = exports.useColors();
+    if (null == self.color && self.useColors) self.color = selectColor();
+
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+
+    args[0] = exports.coerce(args[0]);
+
+    if ('string' !== typeof args[0]) {
+      // anything else let's inspect with %o
+      args = ['%o'].concat(args);
+    }
+
+    // apply any `formatters` transformations
+    var index = 0;
+    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+      // if we encounter an escaped % then don't increase the array index
+      if (match === '%%') return match;
+      index++;
+      var formatter = exports.formatters[format];
+      if ('function' === typeof formatter) {
+        var val = args[index];
+        match = formatter.call(self, val);
+
+        // now we need to remove `args[index]` since it's inlined in the `format`
+        args.splice(index, 1);
+        index--;
+      }
+      return match;
+    });
+
+    // apply env-specific formatting
+    args = exports.formatArgs.apply(self, args);
+
+    var logFn = enabled.log || exports.log || console.log.bind(console);
+    logFn.apply(self, args);
+  }
+  enabled.enabled = true;
+
+  var fn = exports.enabled(namespace) ? enabled : disabled;
+
+  fn.namespace = namespace;
+
+  return fn;
+}
+
+/**
+ * Enables a debug mode by namespaces. This can include modes
+ * separated by a colon and wildcards.
+ *
+ * @param {String} namespaces
+ * @api public
+ */
+
+function enable(namespaces) {
+  exports.save(namespaces);
+
+  var split = (namespaces || '').split(/[\s,]+/);
+  var len = split.length;
+
+  for (var i = 0; i < len; i++) {
+    if (!split[i]) continue; // ignore empty strings
+    namespaces = split[i].replace(/[\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*?');
+    if (namespaces[0] === '-') {
+      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+    } else {
+      exports.names.push(new RegExp('^' + namespaces + '$'));
+    }
+  }
+}
+
+/**
+ * Disable debug output.
+ *
+ * @api public
+ */
+
+function disable() {
+  exports.enable('');
+}
+
+/**
+ * Returns true if the given mode name is enabled, false otherwise.
+ *
+ * @param {String} name
+ * @return {Boolean}
+ * @api public
+ */
+
+function enabled(name) {
+  var i, len;
+  for (i = 0, len = exports.skips.length; i < len; i++) {
+    if (exports.skips[i].test(name)) {
+      return false;
+    }
+  }
+  for (i = 0, len = exports.names.length; i < len; i++) {
+    if (exports.names[i].test(name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Coerce `val`.
+ *
+ * @param {Mixed} val
+ * @return {Mixed}
+ * @api private
+ */
+
+function coerce(val) {
+  if (val instanceof Error) return val.stack || val.message;
+  return val;
+}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    import sys
+from typing import TYPE_CHECKING
+
+if sys.version_info < (3, 7) or TYPE_CHECKING:
+    from ._visible import VisibleValidator
+    from ._valuessrc import ValuessrcValidator
+    from ._values import ValuesValidator
+    from ._uirevision import UirevisionValidator
+    from ._uid import UidValidator
+    from ._title import TitleValidator
+    from ._texttemplatesrc import TexttemplatesrcValidator
+    from ._texttemplate import TexttemplateValidator
+    from ._textsrc import TextsrcValidator
+    from ._textpositionsrc import TextpositionsrcValidator
+    from ._textposition import TextpositionValidator
+    from ._textinfo import TextinfoValidator
+    from ._textfont import TextfontValidator
+    from ._text import TextValidator
+    from ._stream import StreamValidator
+    from ._showlegend import ShowlegendValidator
+    from ._scalegroup import ScalegroupValidator
+    from ._opacity import OpacityValidator
+    from ._name import NameValidator
+    from ._metasrc import MetasrcValidator
+    from ._meta import MetaValidator
+    from ._marker import MarkerValidator
+    from ._legendwidth import LegendwidthValidator
+    from ._legendrank import LegendrankValidator
+    from ._legendgrouptitle import LegendgrouptitleValidator
+    from ._legendgroup import LegendgroupValidator
+    from ._legend import LegendValidator
+    from ._labelssrc import LabelssrcValidator
+    from ._labels import LabelsValidator
+    from ._label0 import Label0Validator
+    from ._insidetextfont import InsidetextfontValidator
+    from ._idssrc import IdssrcValidator
+    from ._ids import IdsValidator
+    from ._hovertextsrc import HovertextsrcValidator
+    from ._hovertext import HovertextValidator
+    from ._hovertemplatesrc import HovertemplatesrcValidator
+    from ._hovertemplate import HovertemplateValidator
+    from ._hoverlabel import HoverlabelValidator
+    from ._hoverinfosrc import HoverinfosrcValidator
+    from ._hoverinfo import HoverinfoValidator
+    from ._domain import DomainValidator
+    from ._dlabel import DlabelValidator
+    from ._customdatasrc import CustomdatasrcValidator
+    from ._customdata import CustomdataValidator
+    from ._baseratio import BaseratioValidator
+    from ._aspectratio import AspectratioValidator
+else:
+    from _plotly_utils.importers import relative_import
+
+    __all__, __getattr__, __dir__ = relative_import(
+        __name__,
+        [],
+        [
+            "._visible.VisibleValidator",
+            "._valuessrc.ValuessrcValidator",
+            "._values.ValuesValidator",
+            "._uirevision.UirevisionValidator",
+            "._uid.UidValidator",
+            "._title.TitleValidator",
+            "._texttemplatesrc.TexttemplatesrcValidator",
+            "._texttemplate.TexttemplateValidator",
+            "._textsrc.TextsrcValidator",
+            "._textpositionsrc.TextpositionsrcValidator",
+            "._textposition.TextpositionValidator",
+            "._textinfo.TextinfoValidator",
+            "._textfont.TextfontValidator",
+            "._text.TextValidator",
+            "._stream.StreamValidator",
+            "._showlegend.ShowlegendValidator",
+            "._scalegroup.ScalegroupValidator",
+            "._opacity.OpacityValidator",
+            "._name.NameValidator",
+            "._metasrc.MetasrcValidator",
+            "._meta.MetaValidator",
+            "._marker.MarkerValidator",
+            "._legendwidth.LegendwidthValidator",
+            "._legendrank.LegendrankValidator",
+            "._legendgrouptitle.LegendgrouptitleValidator",
+            "._legendgroup.LegendgroupValidator",
+            "._legend.LegendValidator",
+            "._labelssrc.LabelssrcValidator",
+            "._labels.LabelsValidator",
+            "._label0.Label0Validator",
+            "._insidetextfont.InsidetextfontValidator",
+            "._idssrc.IdssrcValidator",
+            "._ids.IdsValidator",
+            "._hovertextsrc.HovertextsrcValidator",
+            "._hovertext.HovertextValidator",
+            "._hovertemplatesrc.HovertemplatesrcValidator",
+            "._hovertemplate.HovertemplateValidator",
+            "._hoverlabel.HoverlabelValidator",
+            "._hoverinfosrc.HoverinfosrcValidator",
+            "._hoverinfo.HoverinfoValidator",
+            "._domain.DomainValidator",
+            "._dlabel.DlabelValidator",
+            "._customdatasrc.CustomdatasrcValidator",
+            "._customdata.CustomdataValidator",
+            "._baseratio.BaseratioValidator",
+            "._aspectratio.AspectratioValidator",
+        ],
+    )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     import sys
+from typing import TYPE_CHECKING
+
+if sys.version_info < (3, 7) or TYPE_CHECKING:
+    from ._yref import YrefValidator
+    from ._ypad import YpadValidator
+    from ._yanchor import YanchorValidator
+    from ._y import YValidator
+    from ._xref import XrefValidator
+    from ._xpad import XpadValidator
+    from ._xanchor import XanchorValidator
+    from ._x import XValidator
+    from ._title import TitleValidator
+    from ._tickwidth import TickwidthValidator
+    from ._tickvalssrc import TickvalssrcValidator
+    from ._tickvals import TickvalsValidator
+    from ._ticktextsrc import TicktextsrcValidator
+    from ._ticktext import TicktextValidator
+    from ._ticksuffix import TicksuffixValidator
+    from ._ticks import TicksValidator
+    from ._tickprefix import TickprefixValidator
+    from ._tickmode import TickmodeValidator
+    from ._ticklen import TicklenValidator
+    from ._ticklabelstep import TicklabelstepValidator
+    from ._ticklabelposition import TicklabelpositionValidator
+    from ._ticklabeloverflow import TicklabeloverflowValidator
+    from ._tickformatstopdefaults import TickformatstopdefaultsValidator
+    from ._tickformatstops import TickformatstopsValidator
+    from ._tickformat import TickformatValidator
+    from ._tickfont import TickfontValidator
+    from ._tickcolor import TickcolorValidator
+    from ._tickangle import TickangleValidator
+    from ._tick0 import Tick0Validator
+    from ._thicknessmode import ThicknessmodeValidator
+    from ._thickness import ThicknessValidator
+    from ._showticksuffix import ShowticksuffixValidator
+    from ._showtickprefix import ShowtickprefixValidator
+    from ._showticklabels import ShowticklabelsValidator
+    from ._showexponent import ShowexponentValidator
+    from ._separatethousands import SeparatethousandsValidator
+    from ._outlinewidth import OutlinewidthValidator
+    from ._outlinecolor import OutlinecolorValidator
+    from ._orientation import OrientationValidator
+    from ._nticks import NticksValidator
+    from ._minexponent import MinexponentValidator
+    from ._lenmode import LenmodeValidator
+    from ._len import LenValidator
+    from ._labelalias import LabelaliasValidator
+    from ._exponentformat import ExponentformatValidator
+    from ._dtick import DtickValidator
+    from ._borderwidth import BorderwidthValidator
+    from ._bordercolor import BordercolorValidator
+    from ._bgcolor import BgcolorValidator
+else:
+    from _plotly_utils.importers import relative_import
+
+    __all__, __getattr__, __dir__ = relative_import(
+        __name__,
+        [],
+        [
+            "._yref.YrefValidator",
+            "._ypad.YpadValidator",
+            "._yanchor.YanchorValidator",
+            "._y.YValidator",
+            "._xref.XrefValidator",
+            "._xpad.XpadValidator",
+            "._xanchor.XanchorValidator",
+            "._x.XValidator",
+            "._title.TitleValidator",
+            "._tickwidth.TickwidthValidator",
+            "._tickvalssrc.TickvalssrcValidator",
+            "._tickvals.TickvalsValidator",
+            "._ticktextsrc.TicktextsrcValidator",
+            "._ticktext.TicktextValidator",
+            "._ticksuffix.TicksuffixValidator",
+            "._ticks.TicksValidator",
+            "._tickprefix.TickprefixValidator",
+            "._tickmode.TickmodeValidator",
+            "._ticklen.TicklenValidator",
+            "._ticklabelstep.TicklabelstepValidator",
+            "._ticklabelposition.TicklabelpositionValidator",
+            "._ticklabeloverflow.TicklabeloverflowValidator",
+            "._tickformatstopdefaults.TickformatstopdefaultsValidator",
+            "._tickformatstops.TickformatstopsValidator",
+            "._tickformat.TickformatValidator",
+            "._tickfont.TickfontValidator",
+            "._tickcolor.TickcolorValidator",
+            "._tickangle.TickangleValidator",
+            "._tick0.Tick0Validator",
+            "._thicknessmode.ThicknessmodeValidator",
+            "._thickness.ThicknessValidator",
+            "._showticksuffix.ShowticksuffixValidator",
+            "._showtickprefix.ShowtickprefixValidator",
+            "._showticklabels.ShowticklabelsValidator",
+            "._showexponent.ShowexponentValidator",
+            "._separatethousands.SeparatethousandsValidator",
+            "._outlinewidth.OutlinewidthValidator",
+            "._outlinecolor.OutlinecolorValidator",
+            "._orientation.OrientationValidator",
+            "._nticks.NticksValidator",
+            "._minexponent.MinexponentValidator",
+            "._lenmode.LenmodeValidator",
+            "._len.LenValidator",
+            "._labelalias.LabelaliasValidator",
+            "._exponentformat.ExponentformatValidator",
+            "._dtick.DtickValidator",
+            "._borderwidth.BorderwidthValidator",
+            "._bordercolor.BordercolorValidator",
+            "._bgcolor.BgcolorValidator",
+        ],
+    )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      import _plotly_utils.basevalidators
+
+
+class LineValidator(_plotly_utils.basevalidators.CompoundValidator):
+    def __init__(self, plotly_name="line", parent_name="funnel.marker", **kwargs):
+        super(LineValidator, self).__init__(
+            plotly_name=plotly_name,
+            parent_name=parent_name,
+            data_class_str=kwargs.pop("data_class_str", "Line"),
+            data_docs=kwargs.pop(
+                "data_docs",
+                """
+            autocolorscale
+                Determines whether the colorscale is a default
+                palette (`autocolorscale: true`) or the palette
+                determined by `marker.line.colorscale`. Has an
+                effect only if in `marker.line.color` is set to
+                a numerical array. In case `colorscale` is
+                unspecified or `autocolorscale` is true, the
+                default palette will be chosen according to
+                whether numbers in the `color` array are all
+                positive, all negative or mixed.
+            cauto
+                Determines whether or not the color domain is
+                computed with respect to the input data (here
+                in `marker.line.color`) or the bounds set in
+                `marker.line.cmin` and `marker.line.cmax` Has
+                an effect only if in `marker.line.color` is set
+                to a numerical array. Defaults to `false` when
+                `marker.line.cmin` and `marker.line.cmax` are
+                set by the user.
+            cmax
+                Sets the upper bound of the color domain. Has
+                an effect only if in `marker.line.color` is set
+                to a numerical array. Value should have the
+                same units as in `marker.line.color` and if
+                set, `marker.line.cmin` must be set as well.
+            cmid
+                Sets the mid-point of the color domain by
+                scaling `marker.line.cmin` and/or
+                `marker.line.cmax` to be equidistant to this
+                point. Has an effect only if in
+                `marker.line.color` is set to a numerical
+                array. Value should have the same units as in
+                `marker.line.color`. Has no effect when
+                `marker.line.cauto` is `false`.
+            cmin
+                Sets the lower bound of the color domain. Has
+                an effect only if in `marker.line.color` is set
+                to a numerical array. Value should have the
+                same units as in `marker.line.color` and if
+                set, `marker.line.cmax` must be set as well.
+            color
+                Sets the marker.line color. It accepts either a
+                specific color or an array of numbers that are
+                mapped to the colorscale relative to the max
+                and min values of the array or relative to
+                `marker.line.cmin` and `marker.line.cmax` if
+                set.
+            coloraxis
+                Sets a reference to a shared color axis.
+                References to these shared color axes are
+                "coloraxis", "coloraxis2", "coloraxis3", etc.
+                Settings for these shared color axes are set in
+                the layout, under `layout.coloraxis`,
+                `layout.coloraxis2`, etc. Note that multiple
+                color scales can be linked to the same color
+                axis.
+            colorscale
+                Sets the colorscale. Has an effect only if in
+                `marker.line.color` is set to a numerical
+                array. The colorscale must be an array
+                containing arrays mapping a normalized value to
+                an rgb, rgba, hex, hsl, hsv, or named color
+                string. At minimum, a mapping for the lowest
+                (0) and highest (1) values are required. For
+                example, `[[0, 'rgb(0,0,255)'], [1,
+                'rgb(255,0,0)']]`. To control the bounds of the
+                colorscale in color space, use
+                `marker.line.cmin` and `marker.line.cmax`.
+                Alternatively, `colorscale` may be a palette
+                name string of the following list: Blackbody,Bl
+                uered,Blues,Cividis,Earth,Electric,Greens,Greys
+                ,Hot,Jet,Picnic,Portland,Rainbow,RdBu,Reds,Viri
+                dis,YlGnBu,YlOrRd.
+            colorsrc
+                Sets the source reference on Chart Studio Cloud
+                for `color`.
+            reversescale
+                Reverses the color mapping if true. Has an
+                effect only if in `marker.line.color` is set to
+                a numerical array. If true, `marker.line.cmin`
+                will correspond to the last color in the array
+                and `marker.line.cmax` will correspond to the
+                first color.
+            width
+                Sets the width (in px) of the lines bounding
+                the marker points.
+            widthsrc
+                Sets the source reference on Chart Studio Cloud
+                for `width`.
+""",
+            ),
+            **kwargs,
+        )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.extrude - GRASS GIS manual</title>
+ <meta name="description" content="v.extrude: Optionally the height can be derived from sampling of elevation raster map.">
+ <meta name="keywords" content="vector, geometry, sampling, 3D">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#notes">NOTES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'<ul>' + 
+'<li><a class="toc-item" href="#3d-houses-with-fixed-height">3D houses with fixed height</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#3d-houses-with-individual-height">3D houses with individual height</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#convert-2d-points-to-3d-vertical-lines-with-fixed-height">Convert 2D points to 3D vertical lines with fixed height</a>' + 
+'</li>' + 
+'</ul></li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#authors">AUTHORS</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.extrude</b></em>  - Extrudes flat vector features to 3D vector features with defined height.<BR>
+Optionally the height can be derived from sampling of elevation raster map.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_geometry.html">geometry</a>, <a href="keywords.html#sampling">sampling</a>, <a href="keywords.html#3D">3D</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.extrude</b><br></div>
+<b>v.extrude --help</b><br>
+<div id="synopsis"><b>v.extrude</b> [-<b>t</b>] <b>input</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]   [<b>cats</b>=<em>range</em>]   [<b>where</b>=<em>sql_query</em>]   [<b>type</b>=<em>string</em>[,<i>string</i>,...]]  <b>output</b>=<em>name</em>  [<b>zshift</b>=<em>float</em>]   [<b>height</b>=<em>float</em>]   [<b>height_column</b>=<em>name</em>]   [<b>elevation</b>=<em>name</em>]   [<b>method</b>=<em>string</em>]   [<b>scale</b>=<em>float</em>]   [<b>null_value</b>=<em>float</em>]   [--<b>overwrite</b>]  [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>-t</b></dt>
+<dd>Trace elevation</dd>
+
+<dt><b>--overwrite</b></dt>
+<dd>Allow output files to overwrite existing files</dd>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>input</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of input vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name ('-1' for all layers)</dd>
+<dd>A single vector map can be connected to multiple database tables. This number determines which table to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>-1</em></dd>
+
+<dt><b>cats</b>=<em>range</em></dt>
+<dd>Category values</dd>
+<dd>Example: 1,3,7-9,13</dd>
+
+<dt><b>where</b>=<em>sql_query</em></dt>
+<dd>WHERE conditions of SQL statement without 'where' keyword</dd>
+<dd>Example: income &lt; 1000 and population &gt;= 10000</dd>
+
+<dt><b>type</b>=<em>string[,<i>string</i>,...]</em></dt>
+<dd>Input feature type</dd>
+<dd>Options: <em>point, line, area</em></dd>
+<dd>Default: <em>point,line,area</em></dd>
+
+<dt><b>output</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name for output vector map</dd>
+
+<dt><b>zshift</b>=<em>float</em></dt>
+<dd>Shifting value for z coordinates</dd>
+<dd>Default: <em>0</em></dd>
+
+<dt><b>height</b>=<em>float</em></dt>
+<dd>Fixed height for 3D vector features</dd>
+
+<dt><b>height_column</b>=<em>name</em></dt>
+<dd>Name of attribute column with feature height</dd>
+
+<dt><b>elevation</b>=<em>name</em></dt>
+<dd>Elevation raster map for height extraction</dd>
+
+<dt><b>method</b>=<em>string</em></dt>
+<dd>Sampling interpolation method</dd>
+<dd>Options: <em>nearest, bilinear, bicubic</em></dd>
+<dd>Default: <em>nearest</em></dd>
+<dd><b>nearest</b>: Nearest-neighbor interpolation</dd>
+<dd><b>bilinear</b>: Bilinear interpolation</dd>
+<dd><b>bicubic</b>: Bicubic interpolation</dd>
+
+<dt><b>scale</b>=<em>float</em></dt>
+<dd>Scale factor sampled raster values</dd>
+<dd>Default: <em>1.0</em></dd>
+
+<dt><b>null_value</b>=<em>float</em></dt>
+<dd>Height for sampled raster NULL values</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a>
+    <ul class="toc">
+        <li class="toc"><a href="#3d-houses-with-fixed-height" class="toc">3D houses with fixed height</a></li>
+        <li class="toc"><a href="#3d-houses-with-individual-height" class="toc">3D houses with individual height</a></li>
+        <li class="toc"><a href="#convert-2d-points-to-3d-vertical-lines-with-fixed-height" class="toc">Convert 2D points to 3D vertical lines with fixed height</a></li>
+    </ul></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#authors" class="toc">AUTHORS</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.extrude</em> creates faces, kernels or 3D lines based on input
+2D vector features. Points are converted to 3D vertical lines, lines
+to faces and areas to volumes (composition of closed set of faces and
+kernel).
+
+<p>
+If <b>elevation</b> parameter is used then 3D vector features follow
+the elevation model by using individual elevation values for the
+vertices. Height for vertices is interpolated from elevation raster
+map using given interpolation <b>method</b>.
+
+<h2><a name="notes">NOTES</a></h2>
+
+<em>v.extrude</em> extrudes vector features which means that points
+are converted to vertical lines. Lines and area boundaries are
+extruded to a set of faces, each segment defines one face. Area
+centroids are written as kernels. Area as a composition of boundaries
+and centroid is stored as a closed set of faces and kernel which
+define a volume.
+
+<p>
+For conversion of 2D points or lines to 3D can be
+used <em><a href="v.to.3d.html">v.to.3d</a></em>
+or <em><a href="v.drape.html">v.drape</a></em>. In opposite
+to <em>v.extrude</em>, these modules do not extrude vector features,
+they defines z-coordinate for the features from given parameters or by
+sampling elevation raster map values. It means that no feature type
+conversion is applied, points remain still points in the output vector
+map. Same applies for the lines.
+
+<p>
+<em>v.extrude</em> modifies only features geometry. Feature categories
+remain untouched and attribute data is copied from input vector map to
+the output.
+
+<p>
+By default, all features (including features without category) from
+input vector map are processed (<b>layer=-1</b>). Feature selection
+can be applied by <b>layer</b>, <b>cats</b> or <b>where</b>
+parameter.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+<h3><a name="3d-houses-with-fixed-height">3D houses with fixed height</a></h3>
+
+<div class="code"><pre>
+v.extrude input=houses output=houses3D height=5 type=area
+</pre></div>
+
+<h3><a name="3d-houses-with-individual-height">3D houses with individual height</a></h3>
+
+<div class="code"><pre>
+v.extrude input=houses output=houses3D elevation=dem height_column=height type=area
+</pre></div>
+
+<h3><a name="convert-2d-points-to-3d-vertical-lines-with-fixed-height">Convert 2D points to 3D vertical lines with fixed height</a></h3>
+
+<div class="code"><pre>
+v.extrude input=geodetic_pts output=points3D height=200 type=point
+</pre></div>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="v.transform.html">v.transform</a>,
+<a href="v.drape.html">v.drape</a>,
+<a href="v.to.3d.html">v.to.3d</a>
+</em>
+
+<p>
+<em>
+<a href="wxGUI.nviz.html">wxGUI 3D viewer</a>
+</em>
+
+<h2><a name="authors">AUTHORS</a></h2>
+
+Jachym Cepicky,<br>
+Updated for GRASS 7 by Martin Landa, FBK-irst,
+Italy and Czech Technical University in Prague, Czech Republic
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/vector/v.extrude">v.extrude source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/vector/v.extrude">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 21:47:19 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.drape - GRASS GIS manual</title>
+ <meta name="description" content="v.drape: Converts 2D vector features to 3D by sampling of elevation raster map.">
+ <meta name="keywords" content="vector, geometry, sampling, 3D, surface information">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#notes">NOTES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'<ul>' + 
+'<li><a class="toc-item" href="#povray-example">POVRAY example</a>' + 
+'</li>' + 
+'</ul></li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#authors">AUTHORS</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.drape</b></em>  - Converts 2D vector features to 3D by sampling of elevation raster map.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_geometry.html">geometry</a>, <a href="keywords.html#sampling">sampling</a>, <a href="keywords.html#3D">3D</a>, <a href="keywords.html#surface information">surface information</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.drape</b><br></div>
+<b>v.drape --help</b><br>
+<div id="synopsis"><b>v.drape</b> <b>input</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]   [<b>cats</b>=<em>range</em>]   [<b>where</b>=<em>sql_query</em>]   [<b>type</b>=<em>string</em>[,<i>string</i>,...]]  <b>output</b>=<em>name</em> <b>elevation</b>=<em>name</em>  [<b>method</b>=<em>string</em>]   [<b>scale</b>=<em>float</em>]   [<b>null_value</b>=<em>float</em>]   [--<b>overwrite</b>]  [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>--overwrite</b></dt>
+<dd>Allow output files to overwrite existing files</dd>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>input</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of input vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name ('-1' for all layers)</dd>
+<dd>A single vector map can be connected to multiple database tables. This number determines which table to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>-1</em></dd>
+
+<dt><b>cats</b>=<em>range</em></dt>
+<dd>Category values</dd>
+<dd>Example: 1,3,7-9,13</dd>
+
+<dt><b>where</b>=<em>sql_query</em></dt>
+<dd>WHERE conditions of SQL statement without 'where' keyword</dd>
+<dd>Example: income &lt; 1000 and population &gt;= 10000</dd>
+
+<dt><b>type</b>=<em>string[,<i>string</i>,...]</em></dt>
+<dd>Input feature type</dd>
+<dd>Options: <em>point, line, boundary, centroid</em></dd>
+<dd>Default: <em>point,line,boundary,centroid</em></dd>
+
+<dt><b>output</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name for output vector map</dd>
+
+<dt><b>elevation</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Elevation raster map for height extraction</dd>
+
+<dt><b>method</b>=<em>string</em></dt>
+<dd>Sampling interpolation method</dd>
+<dd>Options: <em>nearest, bilinear, bicubic</em></dd>
+<dd>Default: <em>nearest</em></dd>
+<dd><b>nearest</b>: Nearest-neighbor interpolation</dd>
+<dd><b>bilinear</b>: Bilinear interpolation</dd>
+<dd><b>bicubic</b>: Bicubic interpolation</dd>
+
+<dt><b>scale</b>=<em>float</em></dt>
+<dd>Scale factor sampled raster values</dd>
+<dd>Default: <em>1.0</em></dd>
+
+<dt><b>null_value</b>=<em>float</em></dt>
+<dd>Height for sampled raster NULL values</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a>
+    <ul class="toc">
+        <li class="toc"><a href="#povray-example" class="toc">POVRAY example</a></li>
+    </ul></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#authors" class="toc">AUTHORS</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.drape</em> converts 2D/3D vector data into 3D vector format via
+sampling of an elevation surface. Three sampling algorithms adapted
+from <em><a href="v.sample.html">v.sample</a></em> were incorporated
+into this module: nearest neighbor, bilinear, and cubic convultion.
+
+<p>
+<em>v.drape</em> will skip vector features outside of current
+computational region or where raster map has NULL value. It's possible
+to include all vector features by specifying height value that will be
+assigned to verticles whose values can not be determined from raster
+map.
+
+<h2><a name="notes">NOTES</a></h2>
+
+Additional vertices can be added to the input 2D vector map
+with <em><a href="v.split.html">v.split</a></em>.
+
+<p>
+The module can be used in conjunction
+with <em><a href="v.out.pov.html">v.out.pov</a></em> and
+<em><a href="r.out.pov.html">r.out.pov</a></em> to export a complete
+set of vector and raster data for display
+in <a href="http://www.povray.org/">POVRAY</a>.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+Spearfish example:
+
+<div class="code"><pre>
+v.drape in=roads elevation=elevation.10m method=bilinear out=roads3d
+v.info roads3d
+</pre></div>
+
+<p>
+Create 3D vector roads map containing only "unimproved" roads. Set
+road height to 1000 m for all parts without height information.
+
+<div class="code"><pre>
+v.drape input=roads type=line elevation=elevation.dem output=roads_3d \
+        method=nearest scale=1.0 where='cat=5' layer=1 null_value=1000
+</pre></div>
+
+<h3><a name="povray-example">POVRAY example</a></h3>
+
+<div class="code"><pre>
+#export the vector data
+v.drape in=roads out=roads3d elevation=elevation.10m
+v.out.pov roads3d out=roads3d.pov
+#export the raster data
+r.out.pov elevation.10m tga=elevation.tga
+r.out.png landcover.30m out=landcover30m.png
+
+# now write a complete povray-script and launch povray
+</pre></div>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="v.extrude.html">v.extrude</a>,
+<a href="v.to.3d.html">v.to.3d</a>,
+<a href="r.out.pov.html">r.out.pov</a>,
+<a href="v.in.region.html">v.in.region</a>,
+<a href="v.out.pov.html">v.out.pov</a>,
+<a href="v.overlay.html">v.overlay</a>,
+<a href="v.split.html">v.split</a>,
+<a href="v.what.rast.html">v.what.rast</a>
+</em>
+
+<h2><a name="authors">AUTHORS</a></h2>
+
+Dylan Beaudette, University of California at Davis.<br>
+Updated for GRASS 7 by Martin Landa, Czech Technical University in
+Prague, Czech Republic
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/vector/v.drape">v.drape source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/vector/v.drape">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 21:46:58 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.dissolve.py - GRASS GIS manual</title>
+ <meta name="description" content="v.dissolve.py: Dissolves boundaries between adjacent areas sharing a common category number or attribute.">
+ <meta name="keywords" content="vector, dissolve, area, line">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#notes">NOTES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'<ul>' + 
+'<li><a class="toc-item" href="#basic-use">Basic use</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#dissolving-based-on-column-attributes">Dissolving based on column attributes</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#dissolving-adjacent-shape-files-to-remove-tile-boundaries">Dissolving adjacent SHAPE files to remove tile boundaries</a>' + 
+'</li>' + 
+'</ul></li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#authors">AUTHORS</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.dissolve.py</b></em>  - Dissolves boundaries between adjacent areas sharing a common category number or attribute.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_dissolve.html">dissolve</a>, <a href="keywords.html#area">area</a>, <a href="keywords.html#line">line</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.dissolve.py</b><br></div>
+<b>v.dissolve.py --help</b><br>
+<div id="synopsis"><b>v.dissolve.py</b> <b>input</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]   [<b>column</b>=<em>name</em>]  <b>output</b>=<em>name</em>  [--<b>overwrite</b>]  [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>--overwrite</b></dt>
+<dd>Allow output files to overwrite existing files</dd>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>input</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of input vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name.</dd>
+<dd>Vector features can have category values in different layers. This number determines which layer to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>1</em></dd>
+
+<dt><b>column</b>=<em>name</em></dt>
+<dd>Name of attribute column used to dissolve common boundaries</dd>
+
+<dt><b>output</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name for output vector map</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a>
+    <ul class="toc">
+        <li class="toc"><a href="#basic-use" class="toc">Basic use</a></li>
+        <li class="toc"><a href="#dissolving-based-on-column-attributes" class="toc">Dissolving based on column attributes</a></li>
+        <li class="toc"><a href="#dissolving-adjacent-shape-files-to-remove-tile-boundaries" class="toc">Dissolving adjacent SHAPE files to remove tile boundaries</a></li>
+    </ul></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#authors" class="toc">AUTHORS</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+The <em>v.dissolve</em> module is used to merge adjacent areas in a vector
+map which share the same category value. The resulting merged area(s) retains
+this category value. Alternatively an integer or string column can be defined
+which is used to find adjacent polygons with identical attribute for common
+boundary dissolving. In this case the categories are not retained, only the
+values of the new key column. See the <em>v.reclass</em> help page for details.
+
+<h2><a name="notes">NOTES</a></h2>
+
+GRASS defines a vector area as composite entity consisting of a set of
+closed boundaries and a centroid. The centroids must contain a
+category number
+(see <em>v.centroids</em>), this number is linked to area attributes and
+database links.
+<p>Multiple attributes may be linked to a single vector entity through
+numbered fields referred to as layers. Refer to <em>v.category</em> for
+more details.
+
+<p>Merging of areas can also be accomplished using
+<tt>v.extract -d</tt> which provides some additional options.
+In fact, <em>v.dissolve</em> is simply a
+front-end to that module. The use of the <em>column</em> parameter
+adds a call to <em>v.reclass</em> before.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+<h3><a name="basic-use">Basic use</a></h3>
+<div class="code"><pre>
+v.dissolve input=undissolved output=dissolved
+</pre></div>
+
+<h3><a name="dissolving-based-on-column-attributes">Dissolving based on column attributes</a></h3>
+
+North Carolina data set:
+
+<div class="code"><pre>
+g.copy vect=soils_general,mysoils_general
+v.dissolve mysoils_general output=mysoils_general_families column=GSL_NAME
+</pre></div>
+
+<h3><a name="dissolving-adjacent-shape-files-to-remove-tile-boundaries">Dissolving adjacent SHAPE files to remove tile boundaries</a></h3>
+
+If tile boundaries of adjacent maps (e.g. CORINE Landcover SHAPE files)
+have to be removed, an extra step is required to remove duplicated
+boundaries:
+
+<div class="code"><pre>
+# patch tiles after import:
+v.patch -e `g.list type=vector pat="clc2000_*" separator=","` out=clc2000_patched
+
+# remove duplicated tile boundaries:
+v.clean clc2000_patched out=clc2000_clean tool=snap,break,rmdupl thresh=.01
+
+# dissolve based on column attributes:
+v.dissolve input=clc2000_clean output=clc2000_final col=CODE_00
+</pre></div>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="v.category.html">v.category</a>,
+<a href="v.centroids.html">v.centroids</a>,
+<a href="v.extract.html">v.extract</a>,
+<a href="v.reclass.html">v.reclass</a>
+</em>
+
+<h2><a name="authors">AUTHORS</a></h2>
+
+module: M. Hamish Bowman, Dept. Marine Science, Otago University, New Zealand<br>
+Markus Neteler for column support<br>
+help page: Trevor Wiens
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/scripts/v.dissolve">v.dissolve source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/scripts/v.dissolve">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 22:06:56 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.delaunay - GRASS GIS manual</title>
+ <meta name="description" content="v.delaunay: Creates a Delaunay triangulation from an input vector map containing points or centroids.">
+ <meta name="keywords" content="vector, geometry, triangulation">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#example">EXAMPLE</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#references">REFERENCES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#authors">AUTHORS</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.delaunay</b></em>  - Creates a Delaunay triangulation from an input vector map containing points or centroids.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_geometry.html">geometry</a>, <a href="keywords.html#triangulation">triangulation</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.delaunay</b><br></div>
+<b>v.delaunay --help</b><br>
+<div id="synopsis"><b>v.delaunay</b> [-<b>rl</b>] <b>input</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]  <b>output</b>=<em>name</em>  [--<b>overwrite</b>]  [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>-r</b></dt>
+<dd>Use only points in current region</dd>
+
+<dt><b>-l</b></dt>
+<dd>Output triangulation as a graph (lines), not areas</dd>
+
+<dt><b>--overwrite</b></dt>
+<dd>Allow output files to overwrite existing files</dd>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>input</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of input vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name ('-1' for all layers)</dd>
+<dd>A single vector map can be connected to multiple database tables. This number determines which table to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>-1</em></dd>
+
+<dt><b>output</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name for output vector map</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#example" class="toc">EXAMPLE</a></li>
+    <li class="toc"><a href="#references" class="toc">REFERENCES</a></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#authors" class="toc">AUTHORS</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.delaunay</em> uses an existing vector points map (<b>input</b>)
+to create a Delaunay triangulation vector map (<b>output</b>).
+<p>
+Delaunay triangulation example (red-yellow points are the data points from which the triangulation was generated):
+<center>
+<img src="v_delaunay.png" border="1">
+</center>
+
+<h2><a name="example">EXAMPLE</a></h2>
+
+Commands used with the North Carolina dataset to create the above figure (subset shown in figure).
+<div class="code"><pre>
+g.region n=220750 s=219950 w=638300 e=639000 -p
+v.delaunay input=elev_lid792_randpts output=elev_lid792_randpts_delaunay
+</pre></div>
+
+<h2><a name="references">REFERENCES</a></h2>
+
+<em>Leonid Guibas and Jorge Stolfi, (1985). Primitives for the
+Manipulation of General Subdivisions and the Computation of
+Voronoi Diagrams, ACM Transactions on Graphics, Vol 4, No. 2,
+April 1985, Pages 74-123
+</em>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="v.voronoi.html">v.voronoi</a>,
+<a href="v.hull.html">v.hull</a>
+</em>
+
+<h2><a name="authors">AUTHORS</a></h2>
+
+Martin Pavlovsky, Google Summer of Code 2008, Student<br>
+Paul Kelly, Mentor<br>
+Based on "dct" by Geoff Leach, Department of Computer Science, RMIT.<br>
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/vector/v.delaunay">v.delaunay source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/vector/v.delaunay">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 21:46:46 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.decimate - GRASS GIS manual</title>
+ <meta name="description" content="v.decimate: Copies points from one vector to another while applying different decimations">
+ <meta name="keywords" content="vector, LIDAR, generalization, decimation, extract, select, points, level1">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#notes">NOTES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#references">REFERENCES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#author">AUTHOR</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.decimate</b></em>  - Decimates a point cloud<BR>
+Copies points from one vector to another while applying different decimations
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_LIDAR.html">LIDAR</a>, <a href="keywords.html#generalization">generalization</a>, <a href="keywords.html#decimation">decimation</a>, <a href="keywords.html#extract">extract</a>, <a href="keywords.html#select">select</a>, <a href="keywords.html#points">points</a>, <a href="keywords.html#level1">level1</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.decimate</b><br></div>
+<b>v.decimate --help</b><br>
+<div id="synopsis"><b>v.decimate</b> [-<b>gfczxbt</b>] <b>input</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]  <b>output</b>=<em>name</em>  [<b>zrange</b>=<em>min,max</em>]   [<b>cats</b>=<em>range</em>]   [<b>skip</b>=<em>integer</em>]   [<b>preserve</b>=<em>integer</em>]   [<b>offset</b>=<em>integer</em>]   [<b>limit</b>=<em>integer</em>]   [<b>zdiff</b>=<em>float</em>]   [<b>cell_limit</b>=<em>integer</em>]   [--<b>overwrite</b>]  [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>-g</b></dt>
+<dd>Apply grid-based decimation</dd>
+
+<dt><b>-f</b></dt>
+<dd>Use only first point in grid cell during grid-based decimation</dd>
+
+<dt><b>-c</b></dt>
+<dd>Only one point per cat in grid cell</dd>
+
+<dt><b>-z</b></dt>
+<dd>Use z in grid decimation</dd>
+
+<dt><b>-x</b></dt>
+<dd>Store only the coordinates, throw away categories</dd>
+<dd>Do not story any categories even if they are present in input data</dd>
+
+<dt><b>-b</b></dt>
+<dd>Do not build topology</dd>
+<dd>Advantageous when handling a large number of points</dd>
+
+<dt><b>-t</b></dt>
+<dd>Do not create attribute table</dd>
+
+<dt><b>--overwrite</b></dt>
+<dd>Allow output files to overwrite existing files</dd>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>input</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of input vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name ('-1' for all layers)</dd>
+<dd>A single vector map can be connected to multiple database tables. This number determines which table to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>-1</em></dd>
+
+<dt><b>output</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name for output vector map</dd>
+
+<dt><b>zrange</b>=<em>min,max</em></dt>
+<dd>Filter range for z data (min,max)</dd>
+
+<dt><b>cats</b>=<em>range</em></dt>
+<dd>Category values</dd>
+<dd>Example: 1,3,7-9,13</dd>
+
+<dt><b>skip</b>=<em>integer</em></dt>
+<dd>Throw away every n-th point</dd>
+<dd>For example, 5 will import 80 percent of points. If not specified, all points are copied</dd>
+
+<dt><b>preserve</b>=<em>integer</em></dt>
+<dd>Preserve only every n-th point</dd>
+<dd>For example, 4 will import 25 percent of points. If not specified, all points are copied</dd>
+
+<dt><b>offset</b>=<em>integer</em></dt>
+<dd>Skip first n points</dd>
+<dd>Skips the given number of points at the beginning.</dd>
+
+<dt><b>limit</b>=<em>integer</em></dt>
+<dd>Copy only n points</dd>
+<dd>Copies only the given number of points</dd>
+
+<dt><b>zdiff</b>=<em>float</em></dt>
+<dd>Minimal difference of z values</dd>
+<dd>Minimal difference between z values in grid-based decimation</dd>
+
+<dt><b>cell_limit</b>=<em>integer</em></dt>
+<dd>Preserve only n points per grid cell</dd>
+<dd>Preserves only the given number of points per grid cell in grid-based decimation</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a></li>
+    <li class="toc"><a href="#references" class="toc">REFERENCES</a></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#author" class="toc">AUTHOR</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.decimate</em> reduces number of points in the input vector map
+and copies them over to the output vector map. Different point decimation
+techniques can be applied to reduce the number of points.
+
+<p>
+Two main decimation techniques are:
+<ul>
+<li>count-based decimation (<b>skip</b>, <b>preserve</b>, <b>offset</b>
+    and <b>limit</b> options)
+<li>grid-based decimation (<b>-g</b> flag)
+</ul>
+
+<p>
+The grid-based decimation will remove points based on:
+<ul>
+<li>similar z coordinates (<b>-z</b> flag and <b>zdiff</b> option)
+<li>same categories (<b>-c</b> flag)
+<li>count of points (<b>-f</b> flag and <b>cell_limit</b> option)
+</ul>
+
+<p>
+The grid-based decimation is currently using a 2D grid, so the points
+are placed and compared within this 2D grid. The comparison can happen
+using z coordinates or categories.
+Note that although the grid is only 2D, the module works with 3D points.
+
+<p>
+The grid-based decimation extent and resolution depend on the current
+computational region as set by <em><a href="g.region.html">g.region</a></em>.
+As a consequence, the output is limited only to computational region
+in this case.
+
+<p>
+TODO: Currently, any output is limited by the region.
+
+<p>
+The count-based decimation result highly depends on how the data are
+ordered in the input. This applies especially to <b>offset</b> and
+<b>limit</b> options where the resulting shape and densities can be
+surprising. The options <b>skip</b> and <b>preserve</b> are influenced
+by order of points in a similar way but they usually keep relative
+density of points (which may or may not be desired).
+On the other hand, the grid-based decimation will generally result in
+more even density of output points (see Figure 1).
+
+<p>
+Besides decimation, point count can be reduced by applying different
+selections or filters, these are:
+<ul>
+<li>selection by category (<b>cats</b> option)
+<li>selection by z values (<b>zrange</b> option)
+</ul>
+
+<h2><a name="notes">NOTES</a></h2>
+
+The grid-based decimation requires all points which will be saved in output
+to fit into the computer's memory (RAM).
+It is advantageous to have the region only in the area
+with the points, otherwise unnecessary memory is allocated.
+Higher (finer) resolutions and higher amount of preserved points
+per cell require more memory.
+The count-based decimation has no limitation regarding the available memory.
+
+<p>
+Significant speed up can be gained using <b>-b</b> flag which disables
+building of topology for the output vector map. This may limit the use
+of the vector map by some modules, but for example, this module works
+without topology as well.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+Keep only every forth point, throw away the rest:
+
+<div class="code"><pre>
+v.decimate input=points_all output=points_decimated_every_4 preserve=4
+</pre></div>
+
+<p>
+Keep only points within a grid cell (given by the current computational
+region) which has unique categories (e.g. LIDAR classes):
+
+<div class="code"><pre>
+v.decimate input=points_all output=points_decimated_unique_cats layer=1 -g -c
+</pre></div>
+
+<center>
+    <img src="v_decimate_original.png">
+    <img src="v_decimate_count.png">
+    <img src="v_decimate_grid_cat.png">
+    <p><em>
+        Figure 1: Comparison of original points, decimation result
+        with every forth point preserved, and grid-based decimation
+        result with points with unique categories in each grid cell
+    </em></p>
+</center>
+
+<p>
+Keep only points with category 2 and keep only approximately 80% of the points:
+
+<div class="code"><pre>
+v.decimate input=points_all output=points_decimated_ skip=5 cats=2 layer=1
+</pre></div>
+
+<!--
+g.region map=elev_lid792_1m
+v.colors map=points_all use=cat rules=file.txt
+2 brown
+3:5 green
+6 red
+9 blue
+11 black
+13-14 gray
+d.vect map=points color=none width=1 icon=basic/point
+-->
+
+<h2><a name="references">REFERENCES</a></h2>
+
+<ul>
+<li> Petras, V., Petrasova, A., Jeziorska, J., Mitasova, H. (2016). Processing UAV
+    and LiDAR point clouds in grass GIS. The International Archives of Photogrammetry,
+    Remote Sensing and Spatial Information Sciences, 41, 945
+    (<a href="https://doi.org/10.5194/isprsarchives-XLI-B7-945-2016">DOI</a>)</li>
+</ul>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="v.extract.html">v.extract</a>,
+<a href="v.outlier.html">v.outlier</a>,
+<a href="v.select.html">v.select</a>,
+<a href="v.category.html">v.category</a>,
+<a href="v.build.html">v.build</a>,
+<a href="v.in.lidar.html">v.in.lidar</a>,
+<a href="g.region.html">g.region</a>
+</em>
+
+<h2><a name="author">AUTHOR</a></h2>
+
+Vaclav Petras, <a href="http://geospatial.ncsu.edu/osgeorel/">NCSU OSGeoREL</a>
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/vector/v.decimate">v.decimate source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/vector/v.decimate">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 21:46:38 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.db.update.py - GRASS GIS manual</title>
+ <meta name="description" content="v.db.update.py: Updates a column in the attribute table connected to a vector map.">
+ <meta name="keywords" content="vector, attribute table, database, attribute update, type casting">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#notes">NOTES</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'<ul>' + 
+'<li><a class="toc-item" href="#replacing-of-null-values">Replacing of NULL values</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#updating-of-columns-with-on-the-fly-calculation">Updating of columns with on the fly calculation</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#type-casting">Type casting</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#updating-of-columns-with-on-the-fly-calculation-(sqlite-extended-functions)">Updating of columns with on the fly calculation (SQLite extended functions)</a>' + 
+'</li>' + 
+'</ul></li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#author">AUTHOR</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.db.update.py</b></em>  - Updates a column in the attribute table connected to a vector map.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_attribute_table.html">attribute table</a>, <a href="keywords.html#database">database</a>, <a href="keywords.html#attribute update">attribute update</a>, <a href="keywords.html#type casting">type casting</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.db.update.py</b><br></div>
+<b>v.db.update.py --help</b><br>
+<div id="synopsis"><b>v.db.update.py</b> <b>map</b>=<em>name</em> <b>layer</b>=<em>string</em> <b>column</b>=<em>name</em>  [<b>value</b>=<em>string</em>]   [<b>query_column</b>=<em>name</em>]   [<b>where</b>=<em>sql_query</em>]   [<b>sqliteextra</b>=<em>name</em>]   [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>map</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em>&nbsp;<b>[required]</b></dt>
+<dd>Layer number or name</dd>
+<dd>Vector features can have category values in different layers. This number determines which layer to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>1</em></dd>
+
+<dt><b>column</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of attribute column to update</dd>
+
+<dt><b>value</b>=<em>string</em></dt>
+<dd>Literal value to update the column with</dd>
+
+<dt><b>query_column</b>=<em>name</em></dt>
+<dd>Name of other attribute column to query, can be combination of columns (e.g. co1+col2)</dd>
+
+<dt><b>where</b>=<em>sql_query</em></dt>
+<dd>WHERE conditions of SQL statement without 'where' keyword</dd>
+<dd>Example: income &lt; 1000 and population &gt;= 10000</dd>
+
+<dt><b>sqliteextra</b>=<em>name</em></dt>
+<dd>Name of SQLite extension file for extra functions (SQLite backend only)</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a>
+    <ul class="toc">
+        <li class="toc"><a href="#replacing-of-null-values" class="toc">Replacing of NULL values</a></li>
+        <li class="toc"><a href="#updating-of-columns-with-on-the-fly-calculation" class="toc">Updating of columns with on the fly calculation</a></li>
+        <li class="toc"><a href="#type-casting" class="toc">Type casting</a></li>
+        <li class="toc"><a href="#updating-of-columns-with-on-the-fly-calculation-(sqlite-extended-functions)" class="toc">Updating of columns with on the fly calculation (SQLite extended functions)</a></li>
+    </ul></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#author" class="toc">AUTHOR</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.db.update</em> assigns a new value to a column in the attribute
+table connected to a given map. The <em>value</em> parameter allows
+updating with a literal value. Alternatively, with the <em>qcol</em>
+parameter values can be copied from another column in the table or be
+the result of a combination or transformation of other columns.
+
+<h2><a name="notes">NOTES</a></h2>
+
+<em>v.db.update</em> is just a front-end to <em>db.execute</em> to
+allow easier usage.
+<p>For complex SQL UPDATE statements, <em>db.execute</em> should be used.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+<h3><a name="replacing-of-null-values">Replacing of NULL values</a></h3>
+
+In this example, selectively display lakes without (blue) and with
+NULL (red) are shown to find out which type is undefined. In the
+original map there are lakes missing FTYPE attribute which are
+wetlands along streams. These NULL attributes are replaced with the
+landuse type WETLAND:
+
+<div class="code"><pre>
+g.copy vect=lakes,mylakes
+v.db.select mylakes
+v.db.select mylakes where="FTYPE IS NULL"
+
+# display the lakes, show undefined FTYPE lakes in red
+g.region vector=mylakes
+d.mon wx0
+d.vect mylakes where="FTYPE NOT NULL" type=area col=blue
+d.vect mylakes where="FTYPE IS NULL" type=area col=red
+
+# replace NULL with FTYPE WETLAND
+v.db.update mylakes col=FTYPE value=WETLAND \
+            where="FTYPE IS NULL"
+v.db.select mylakes
+</pre></div>
+
+<h3><a name="updating-of-columns-with-on-the-fly-calculation">Updating of columns with on the fly calculation</a></h3>
+
+Spearfish example: adding new column, copying values from another table
+column with on the fly calculation:
+<div class="code"><pre>
+g.copy vect=fields,myfields
+v.db.addcolumn myfields col="polynum integer"
+v.db.update myfields col=polynum qcol="cat*2"
+v.db.select myfields
+</pre></div>
+
+<h3><a name="type-casting">Type casting</a></h3>
+
+Type cast (type conversion) of strings to double precision
+(unsupported by DBF driver):
+<div class="code"><pre>
+g.copy vect=geodetic_pts,mygeodetic_pts
+v.db.update mygeodetic_pts col=zval qcol="CAST(z_value AS double precision)" \
+            where="z_value &lt;&gt; 'N/A'"
+</pre></div>
+
+<h3><a name="updating-of-columns-with-on-the-fly-calculation-(sqlite-extended-functions)">Updating of columns with on the fly calculation (SQLite extended functions)</a></h3>
+
+Note: this requires SQLite extended functions. For details see the GRASS GIS Wiki
+(compilation of <a href="https://grasswiki.osgeo.org/wiki/Build_SQLite_extension_on_Linux">libsqlitefunctions.so</a>
+and <a href="https://grasswiki.osgeo.org/wiki/Build_SQLite_extension_on_windows">libsqlitefunctions.dll</a>).
+<p>
+North Carolina data set example: adding new column, copying values from
+another table column with on the fly calculation:
+
+<div class="code"><pre>
+g.copy vect=precip_30ynormals,myprecip_30ynormals
+v.db.addcolumn myprecip_30ynormals column="logjuly double precision"
+v.db.update myprecip_30ynormals column="logjuly" query_column="log(jul)" \
+  sqliteextra=$HOME/sqlite_extensions/libsqlitefunctions.so
+
+v.db.select myprecip_30ynormals columns=jul,logjuly
+jul|logjuly
+132.842|4.88916045210132
+127|4.84418708645859
+124.206|4.82194147751127
+104.648|4.65060233738593
+98.298|4.58800368106618
+...
+</pre></div>
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="db.execute.html">db.execute</a>,
+<a href="v.db.addcolumn.html">v.db.addcolumn</a>,
+<a href="v.db.addtable.html">v.db.addtable</a>,
+<a href="v.db.connect.html">v.db.connect</a>,
+<a href="v.db.droptable.html">v.db.droptable</a>,
+<a href="v.db.join.html">v.db.join</a>,
+<a href="v.db.select.html">v.db.select</a>
+</em>
+
+<p>
+<em>
+<a href="sql.html">GRASS SQL interface</a>
+</em>
+
+<h2><a name="author">AUTHOR</a></h2>
+
+Moritz Lennert (mlennert@club.worldonline.be)
+<h2>SOURCE CODE</h2>
+<p>
+  Available at:
+  <a href="https://github.com/OSGeo/grass/tree/main/scripts/v.db.update">v.db.update source code</a>
+  (<a href="https://github.com/OSGeo/grass/commits/main/scripts/v.db.update">history</a>)
+</p>
+<p>
+  Accessed: Monday May 20 22:06:53 2024
+</p>
+<hr class="header">
+<p>
+<a href="index.html">Main index</a> |
+<a href="vector.html">Vector index</a> |
+<a href="topics.html">Topics index</a> |
+<a href="keywords.html">Keywords index</a> |
+<a href="graphical_index.html">Graphical index</a> |
+<a href="full_index.html">Full index</a>
+</p>
+<p>
+&copy; 2003-2024
+<a href="https://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 8.3.2 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="Author" content="GRASS Development Team">
+ <meta http-equiv="content-language" content="en-us">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>v.db.univar.py - GRASS GIS manual</title>
+ <meta name="description" content="v.db.univar.py: Calculates univariate statistics on selected table column for a GRASS vector map.">
+ <meta name="keywords" content="vector, statistics, attribute table">
+ <link rel="stylesheet" href="grassdocs.css" type="text/css">
+</head>
+<body bgcolor="white">
+<div id="container">
+
+<a href="index.html"><img src="grass_logo.png" alt="GRASS logo"></a>
+<script>
+// Create hamburger menu TOC HTML elements by the JavaScript
+let temp = document.createElement('template');
+const toc = '<ul class="toc-mobile-screen" id="toc-mobile-screen">' + 
+'<li><a class="toc-item" href="#description">DESCRIPTION</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#examples">EXAMPLES</a>' + 
+'<ul>' + 
+'<li><a class="toc-item" href="#univariate-statistics-on-attribute-table-column">Univariate statistics on attribute table column</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#univariate-statistics-on-randomly-sampled-data-points">Univariate statistics on randomly sampled data points</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#json-output">JSON output</a>' + 
+'</li>' + 
+'</ul></li>' + 
+'<li><a class="toc-item" href="#see-also">SEE ALSO</a>' + 
+'</li>' + 
+'<li><a class="toc-item" href="#authors">AUTHORS</a>' + 
+'</li>' +
+'<a class="close" href="#">' +
+'<img src="./hamburger_menu_close.svg" alt="close">' +
+'</a>' +
+'</ul>' +
+'<a class="hamburger" href="#toc-mobile-screen">' +
+'<img src="./hamburger_menu.svg" alt="menu">' +
+'</a>';
+temp.innerHTML = toc;
+const grassLogoLink = document.getElementsByTagName("img")[0];
+grassLogoLink.after(temp.content);
+</script>
+<hr class="header">
+
+<h2>NAME</h2>
+<em><b>v.db.univar.py</b></em>  - Calculates univariate statistics on selected table column for a GRASS vector map.
+<h2>KEYWORDS</h2>
+<a href="vector.html">vector</a>, <a href="topic_statistics.html">statistics</a>, <a href="keywords.html#attribute table">attribute table</a>
+<h2>SYNOPSIS</h2>
+<div id="name"><b>v.db.univar.py</b><br></div>
+<b>v.db.univar.py --help</b><br>
+<div id="synopsis"><b>v.db.univar.py</b> [-<b>eg</b>] <b>map</b>=<em>name</em>  [<b>layer</b>=<em>string</em>]  <b>column</b>=<em>name</em>  [<b>where</b>=<em>sql_query</em>]   [<b>percentile</b>=<em>float</em>[,<i>float</i>,...]]   [<b>format</b>=<em>string</em>]   [--<b>help</b>]  [--<b>verbose</b>]  [--<b>quiet</b>]  [--<b>ui</b>] 
+</div>
+
+<div id="flags">
+<h3>Flags:</h3>
+<dl>
+<dt><b>-e</b></dt>
+<dd>Extended statistics (quartiles and 90th percentile)</dd>
+
+<dt><b>-g</b></dt>
+<dd>Print stats in shell script style</dd>
+
+<dt><b>--help</b></dt>
+<dd>Print usage summary</dd>
+<dt><b>--verbose</b></dt>
+<dd>Verbose module output</dd>
+<dt><b>--quiet</b></dt>
+<dd>Quiet module output</dd>
+<dt><b>--ui</b></dt>
+<dd>Force launching GUI dialog</dd>
+</dl>
+</div>
+
+<div id="parameters">
+<h3>Parameters:</h3>
+<dl>
+<dt><b>map</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of vector map</dd>
+<dd>Or data source for direct OGR access</dd>
+
+<dt><b>layer</b>=<em>string</em></dt>
+<dd>Layer number or name</dd>
+<dd>Vector features can have category values in different layers. This number determines which layer to use. When used with direct OGR access this is the layer name.</dd>
+<dd>Default: <em>1</em></dd>
+
+<dt><b>column</b>=<em>name</em>&nbsp;<b>[required]</b></dt>
+<dd>Name of attribute column on which to calculate statistics (must be numeric)</dd>
+
+<dt><b>where</b>=<em>sql_query</em></dt>
+<dd>WHERE conditions of SQL statement without 'where' keyword</dd>
+<dd>Example: income &lt; 1000 and population &gt;= 10000</dd>
+
+<dt><b>percentile</b>=<em>float[,<i>float</i>,...]</em></dt>
+<dd>Percentile to calculate (requires extended statistics flag)</dd>
+<dd>Options: <em>0-100</em></dd>
+<dd>Default: <em>90</em></dd>
+
+<dt><b>format</b>=<em>string</em></dt>
+<dd>Output format</dd>
+<dd>Options: <em>plain, json, shell</em></dd>
+<dd><b>plain</b>: Plain text output</dd>
+<dd><b>json</b>: JSON (JavaScript Object Notation)</dd>
+<dd><b>shell</b>: Shell script style for Bash eval</dd>
+
+</dl>
+</div>
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a>
+    <ul class="toc">
+        <li class="toc"><a href="#univariate-statistics-on-attribute-table-column" class="toc">Univariate statistics on attribute table column</a></li>
+        <li class="toc"><a href="#univariate-statistics-on-randomly-sampled-data-points" class="toc">Univariate statistics on randomly sampled data points</a></li>
+        <li class="toc"><a href="#json-output" class="toc">JSON output</a></li>
+    </ul></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#authors" class="toc">AUTHORS</a></li>
+</ul>
+</div>
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>v.db.univar</em> calculates basic univariate statistics for numeric
+attributes in a vector attribute table. It will calculate minimum,
+maximum, range, mean, standard deviation, variance, coefficient of
+variation, quartiles, median, and 90th percentile.
+
+<p><em>v.db.un
