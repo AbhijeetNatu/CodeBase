@@ -1,0 +1,3 @@
+#include "MyApplication.h"
+
+MYICON ICON Rick.ico

@@ -1,0 +1,1 @@
+From this application, Window.c is OGL.cpp
