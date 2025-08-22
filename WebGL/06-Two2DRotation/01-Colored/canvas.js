@@ -1,0 +1,510 @@
+var canvas = null;
+var gl = null;          // this is Context internally
+var bFullscreen = false;
+var canvas_original_width;
+var canvas_original_height;
+
+const webGLMacros = 
+    {
+        AAN_ATTRIBUTE_POSITION:0,
+        AAN_ATTRIBUTE_COLOR:1,
+        AAN_ATTRIBUTE_NORMAL:2,
+        AAN_ATTRIBUTE_TEXTURE0:3,
+    };
+
+var shaderProgramObject;
+
+var vao_square;
+var vbo_square_color;
+var vbo_square_position;
+
+var vao_triangle;
+var vbo_triangle_color;
+var vbo_triangle_position;
+
+var angle = 0.0;
+
+var mvpMatrixUniform;
+
+var perspectiveProjectionMatrix;
+
+var requestAnimationFrame = window.requestAnimationFrame || //initialized variable
+                            window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.oRequestAnimationFrame ||      //Opera : O            
+                            window.msRequestAnimationFrame;
+
+function main()
+{
+    //code
+    //Get Canvas
+    canvas=document.getElementById("AAN");
+    if(!canvas)
+        console.log("Obtaining Canvas Failed..");
+    else
+        console.log("Obtaining Canvas Succeeded..");
+
+    //Backup Canvas Dimensions
+    canvas_original_width=canvas.width;
+    canvas_original_height=canvas.height;
+    
+    //Initialize
+    initialize();
+    
+    //Warmup resize
+    resize();
+
+    //Display
+    display();
+
+    //Update
+    update();
+    
+    //Adding Keyboard and Mouse Event Listeners
+    window.addEventListener("keydown",keyDown,false);
+    window.addEventListener("click",mouseDown,false);
+    window.addEventListener("resize",resize,false);
+}
+
+
+function toggleFullscreen()
+{
+    var fullscreen_element = document.fullscreenElement || 
+    document.mozFullScreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullScreenElement ||
+    null;
+
+    if(fullscreen_element == null)      //If Not Fullscreen
+    {
+        if(canvas.requestFullscreen)        //Function Pointer
+        {
+            canvas.requestFullscreen();
+        }
+        else if(canvas.mozRequestFullScreen)
+        {
+            canvas.mozRequestFullScreen();
+        }
+        else if(canvas.webkitRequestFullscreen)
+        {
+            canvas.webkitRequestFullscreen();
+        }
+        else if(canvas.msRequestFullScreen)
+        {
+            canvas.msRequestFullScreen();
+        }
+        
+        bFullscreen = true;
+    }
+    else
+    {
+        if(document.exitFullscreen)
+        {
+            document.exitFullscreen();
+        }
+        else if(document.mozExitFullScreen)
+        {
+            document.mozExitFullScreen();
+        }
+        else if(document.webkitFullscreen)
+        {
+            document.webkitExitFullscreen();
+        }
+        else if(document.msExitFullScreen)
+        {
+            document.msExitFullScreen();
+        }
+        bFullscreen = false;
+    }
+
+}
+
+
+function initialize()
+{
+    //code
+
+    //Obtain webgl2 Context from Canvas
+    gl=canvas.getContext("webgl2");
+    if(!gl)
+        console.log("Obtaining WebGL2.0 Context Failed..");
+    else
+        console.log("Obtaining WebGL2.0 Context Succeeded..");
+
+    //Set viewport width and height of context
+    gl.viewportWidth = canvas.width;
+    gl.viewportHeight = canvas.height;
+
+    //Vertex Shader
+    var vertexShaderSourceCode = 
+    "#version 300 es" +
+    "\n" +
+    "in vec4 a_position;" +
+    "in vec4 a_color;" +
+    "uniform mat4 u_mvpMatrix;" +
+    "out vec4 a_color_out;" +
+    "void main(void)" +
+    "{" +
+    "gl_Position = u_mvpMatrix * a_position;" +
+    "a_color_out = a_color;" +
+    "}";
+
+    var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
+
+    gl.shaderSource(vertexShaderObject,vertexShaderSourceCode);
+
+    gl.compileShader(vertexShaderObject);
+
+    if(gl.getShaderParameter(vertexShaderObject, gl.COMPILE_STATUS) == false)
+    {
+        var error = gl.getShaderInfoLog(vertexShaderObject);
+    
+        if(error.length>0)
+        {
+            alert("Vertex Shader Compilation Error : \n" + error);
+            uninitialize();
+        }
+    }
+
+    //Fragment Shader
+    var fragmentShaderSourceCode =
+    "#version 300 es" +
+    "\n" +
+    "precision highp float;" +
+    "in vec4 a_color_out;" +
+    "out vec4 FragColor;" +
+    "void main(void)" +
+    "{" +
+    "FragColor = a_color_out;" +
+    "}";
+
+    var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
+
+    gl.shaderSource(fragmentShaderObject,fragmentShaderSourceCode);
+
+    gl.compileShader(fragmentShaderObject);
+
+    if(gl.getShaderParameter(fragmentShaderObject,gl.COMPILE_STATUS) == false)
+    {
+        var error = gl.getShaderInfoLog(fragmentShaderObject);
+
+        if(error.length>0)
+        {
+            alert("Fragment Shader Compilation Error : \n" + error);
+            uninitialize();
+        }
+    }
+
+    //Shader Program Object
+    shaderProgramObject = gl.createProgram();
+
+    gl.attachShader(shaderProgramObject,vertexShaderObject);
+    gl.attachShader(shaderProgramObject,fragmentShaderObject);
+
+    //Prelinking
+
+    //Binding attribute location
+    gl.bindAttribLocation(shaderProgramObject,webGLMacros.AAN_ATTRIBUTE_POSITION,"a_position");
+    gl.bindAttribLocation(shaderProgramObject,webGLMacros.AAN_ATTRIBUTE_COLOR,"a_color");
+    
+
+    // Shader Program Linking
+    gl.linkProgram(shaderProgramObject);
+
+    //Link Error Check
+    if(gl.getProgramParameter(shaderProgramObject,gl.LINK_STATUS) == false)
+    {
+        var log = gl.getProgramInfoLog(shaderProgramObject);
+
+        if(error.length>0)
+        {
+            alert("Shader Program Link Error : \n" + error);
+            uninitialize();
+        }
+    }
+
+    //Post Linking (Get Uniform Location)
+
+    mvpMatrixUniform = gl.getUniformLocation(shaderProgramObject,"u_mvpMatrix");
+
+    //Declaration & Initialization of geometry
+
+    var squareVertices = new Float32Array(
+        [
+            1.0,1.0,0.0,
+            -1.0,1.0,0.0,
+            -1.0,-1.0,0.0,
+            1.0,-1.0,0.0
+        ]
+    );
+
+    var squareColor = new Float32Array(
+        [
+            0.0,0.0,1.0,
+            0.0,0.0,1.0,
+            0.0,0.0,1.0,
+            0.0,0.0,1.0
+        ]
+    );
+
+    var triangleVertices = new Float32Array(
+        [
+            0.0,1.0,0.0,
+            -1.0,-1.0,0.0,
+            1.0,-1.0,0.0
+        ]
+    );
+
+    var triangleColor = new Float32Array(
+        [
+            1.0,0.0,0.0,
+            0.0,1.0,0.0,
+            0.0,0.0,1.0
+        ]
+    );
+    
+
+    //vao and vbo related code
+
+    //vao
+    
+    vao_square = gl.createVertexArray();
+    gl.bindVertexArray(vao_square);
+    //vbo SQUARE
+    vbo_square_position = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,vbo_square_position);
+    gl.bufferData(gl.ARRAY_BUFFER,squareVertices,gl.STATIC_DRAW);
+    gl.vertexAttribPointer(webGLMacros.AAN_ATTRIBUTE_POSITION, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(webGLMacros.AAN_ATTRIBUTE_POSITION);
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);        //UNBIND
+
+    vbo_square_color = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,vbo_square_color);
+    gl.bufferData(gl.ARRAY_BUFFER,squareColor,gl.STATIC_DRAW);
+    gl.vertexAttribPointer(webGLMacros.AAN_ATTRIBUTE_COLOR, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(webGLMacros.AAN_ATTRIBUTE_COLOR);
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);        //UNBIND
+
+
+
+    //vbo TRIANGLE
+    
+    vao_triangle = gl.createVertexArray();
+    gl.bindVertexArray(vao_triangle);
+
+    vbo_triangle_position = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,vbo_triangle_position);
+    gl.bufferData(gl.ARRAY_BUFFER,triangleVertices,gl.STATIC_DRAW);
+    gl.vertexAttribPointer(webGLMacros.AAN_ATTRIBUTE_POSITION, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(webGLMacros.AAN_ATTRIBUTE_POSITION);
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);        //UNBIND
+
+    vbo_triangle_color = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,vbo_triangle_color);
+    gl.bufferData(gl.ARRAY_BUFFER,triangleColor,gl.STATIC_DRAW);
+    gl.vertexAttribPointer(webGLMacros.AAN_ATTRIBUTE_COLOR, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(webGLMacros.AAN_ATTRIBUTE_COLOR);
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);        //UNBIND
+
+
+    gl.bindVertexArray(null);                   //UNBIND
+
+
+    //Depth Related code
+    gl.clearDepth(1.0);
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+
+
+    //Clear screen with black color
+    gl.clearColor(0.0,0.0,0.0,1.0);
+
+    perspectiveProjectionMatrix = mat4.create();       //Taken from gl-matrix-min.js 
+
+}
+
+function resize()
+{
+    //code
+    if(bFullscreen == true)
+    {
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+    }
+    else
+    {
+        canvas.width=canvas_original_width;
+        canvas.height=canvas_original_height;
+    }
+
+    if(canvas.height == 0)
+    {
+        canvas.height = 1;          //To avoid Divided by 0 illegal statement for future code
+    }
+
+    gl.viewport(0,0,canvas.width,canvas.height);
+
+   mat4.perspective(perspectiveProjectionMatrix,45.0,parseFloat(canvas.width)/parseFloat(canvas.height),1.0,100.0);
+}
+
+function display()
+{
+    //code
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    //Use Shader Program Object
+    gl.useProgram(shaderProgramObject);
+
+    //Transformations
+    var angleInRadian= degreeToRadian(angle);
+
+    var modelViewMatrix = mat4.create();
+    var modelViewProjectionMatrix = mat4.create();
+
+    // TRIANGLE
+
+    mat4.translate(modelViewMatrix,modelViewMatrix,[-1.5,0.0,-4.5]);
+
+    mat4.rotateY(modelViewMatrix,modelViewMatrix,angleInRadian);
+
+    mat4.multiply(modelViewProjectionMatrix,perspectiveProjectionMatrix,modelViewMatrix);
+    
+    gl.uniformMatrix4fv(mvpMatrixUniform,false,modelViewProjectionMatrix);
+
+    gl.bindVertexArray(vao_triangle);
+
+    //Here is the drawing code
+
+    gl.drawArrays(gl.TRIANGLES,0,3);
+
+    gl.bindVertexArray(null);
+
+
+    // SQUARE
+    
+    modelViewMatrix =  mat4.identity(modelViewMatrix);
+	modelViewProjectionMatrix =  mat4.identity(modelViewProjectionMatrix);
+
+	mat4.translate(modelViewMatrix, modelViewMatrix, [1.5,0.0,-4.5]);
+	mat4.rotateX(modelViewMatrix, modelViewMatrix,angleInRadian);
+	
+	mat4.multiply(modelViewProjectionMatrix, perspectiveProjectionMatrix, modelViewMatrix);
+    
+    gl.uniformMatrix4fv(mvpMatrixUniform,false,modelViewProjectionMatrix);
+
+    gl.bindVertexArray(vao_square);
+
+    gl.drawArrays(gl.TRIANGLE_FAN,0,4);
+
+    gl.bindVertexArray(null);
+    
+    gl.useProgram(null);
+
+
+    //FUNCTION CALL for update() 
+    update();
+
+    //Double Buffering Emulation Call
+    requestAnimationFrame(display,canvas);
+}
+
+function degreeToRadian(angleInDegree)
+{
+    return (angleInDegree * Math.PI/180);
+}
+
+function update()
+{
+    //code
+    angle = angle + 1.0;
+    if(angle >= 360.0)
+    {
+        angle = angle - 360.0;
+    }
+
+}
+
+//Keyboard Event Listener
+function keyDown(event)
+{
+   //code
+   switch(event.keyCode)
+   {
+    case 27:                
+        uninitialize();
+        window.close();     //Not all browsers will follow this
+        break;
+
+    case 70:
+        toggleFullscreen();
+        break;
+   }
+
+}
+
+//Mouse Event Listener
+function mouseDown()
+{
+    //code
+    
+}
+
+
+function uninitialize()
+{
+    //code
+    if(vao_square)
+    {
+        gl.deleteVertexArray(vao_square);
+        vao_square = null;
+    }
+
+    if(vao_triangle)
+    {
+        gl.deleteVertexArray(vao_triangle);
+        vao_triangle = null;
+    }
+
+    if(vbo_square_color)
+    {
+        gl.deleteBuffer(vbo_square_color);
+        vbo_square_color = null;
+    }
+
+    if(vbo_triangle_color)
+    {
+        gl.deleteBuffer(vbo_triangle_color);
+        vbo_triangle_color = null;
+    }
+
+    if(vbo_square_position)
+    {
+        gl.deleteBuffer(vbo_square_position);
+        vbo_square_position = null;
+    }
+
+    if(vbo_triangle_position)
+    {
+        gl.deleteBuffer(vbo_triangle_position);
+        vbo_triangle_position = null;
+    }
+
+    //Shader uninitialization
+    if(shaderProgramObject)
+    {
+        gl.useProgram(shaderProgramObject);
+
+        var shader_Objects = gl.getAttachedShaders(shaderProgramObject);
+    }
+
+    for(let i = 0; i < shader_Objects.length; i++)
+    {
+        gl.detachShader(shaderProgramObject,shader_Objects[i]);
+        gl.deleteShader(shader_Objects[i]);
+        shader_Objects[i] = 0;
+    }
+
+    gl.useProgram(null);
+    gl.deleteProgram(shaderProgramObject);
+    shaderProgramObject = null;
+}
